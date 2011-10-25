@@ -1,5 +1,5 @@
 /*
-    molt, update images according to the window resolution
+    molt, images updater for media devices
 
     Version : 0.1
     Author  : Aurélien Delogu (dev@dreamysource.fr)

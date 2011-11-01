@@ -1,7 +1,7 @@
 /*
     molt, images updater for media devices
 
-    Version : 0.1
+    Version : 0.2
     Author  : Aurélien Delogu (dev@dreamysource.fr)
     URL     : https://github.com/pyrsmk/molt
     License : MIT
@@ -52,20 +52,9 @@
         Return
             molt
     */
-    window.molt=window.molt || function(url,dimensions,insert,update){
+    window.molt=function(url,dimensions,insert,update,display){
 
-        /*
-            string _url         : image url
-            object _dimensions  : image resolutions corresponding to the specified mode
-            function _update    : update the node
-            object _node        : image node
-            string _display     : "current" display property for that image
-        */
-        var _url,
-            _dimensions,
-            _update,
-            _node,
-            _display='inline';
+        var node;
 
         /*
             Refresh images for that new window size
@@ -75,7 +64,7 @@
             var w=window.getWindowWidth(),
                 mode,
                 last;
-            for(mode in _dimensions){
+            for(mode in dimensions){
                 if(w<mode){
                     mode=last;
                     break;
@@ -83,23 +72,22 @@
                 last=mode;
             }
             // Define node properties
-            if(_dimensions[mode].length){
-                if(_node.style.display=='none'){
-                    _node.style.display=_display;
+            if(dimensions[mode].length){
+                if(node.style.display=='none'){
+                    node.style.display=display;
                 }
-                _node.width=_dimensions[mode][0];
-                _node.height=_dimensions[mode][1];
-                var url=_url;
-                _node.src=url.replace(/\{mode\}/g,mode).
-                              replace(/\{width\}/g,_dimensions[mode][0]).
-                              replace(/\{height\}/g,_dimensions[mode][1]);
+                node.width=dimensions[mode][0];
+                node.height=dimensions[mode][1];
+                node.src=url.replace(/\{mode\}/g,mode).
+                             replace(/\{width\}/g,dimensions[mode][0]).
+                             replace(/\{height\}/g,dimensions[mode][1]);
             }
+            // Hide node
             else{
-                var display=_node.style.display || _display;
-                _node.style.display='none';
+                node.style.display='none';
             }
             // Update node
-            _update(_node);
+            update(node);
         };
 
         // Format
@@ -110,18 +98,13 @@
             update=function(){};
         }
         // Sort dimensions
-        var dims=[];
+        /*var dims=[];
         for(var mode in dimensions){
             dims[mode]=dimensions[mode];
-        }
+        }*/
         // Create node
-        var node=document.createElement('img');
+        node=document.createElement('img');
         node.alt='';
-        // Save data
-        _url=url;
-        _dimensions=dims;
-        _update=update;
-        _node=node;
         // Insert it into the DOM
         insert(node);
         // Update node

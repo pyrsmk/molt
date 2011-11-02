@@ -1,7 +1,7 @@
 /*
     molt, images updater for media devices
 
-    Version : 0.2
+    Version : 0.1.2
     Author  : Aurélien Delogu (dev@dreamysource.fr)
     URL     : https://github.com/pyrsmk/molt
     License : MIT

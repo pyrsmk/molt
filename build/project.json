@@ -7,7 +7,6 @@
         "curly"     : true,
         "eqnull"    : true,
         "newcap"    : true,
-        "indent"    : 4,
-        "undef"     : true
+        "indent"    : 4
     }
 }

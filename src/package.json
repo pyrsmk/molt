@@ -1,0 +1,13 @@
+{
+    "name"          : "molt",
+    "description"   : "Image updater for responsiveness",
+    "version"       : "1.0.0",
+    "author"        : "Aurélien Delogu <pyrsmk@dreamysource.fr> (http://dreamysource.fr)",
+    "repository"    : {
+        "type"  : "git",
+        "url"   : "https://github.com/pyrsmk/molt.git"
+    },
+    "main"          : "molt.js",
+    "ender"         : "ender.js",
+    "keywords"      : ["ender","responsive","image"]
+}

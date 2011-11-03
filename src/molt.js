@@ -7,14 +7,14 @@
     License : MIT
 */
 
-!function(molt){
+!function(name,obj){
     if(typeof module!='undefined'){
-        module.exports=molt;
+        module.exports=obj;
     }
     else{
-        this.molt=molt;
+        this[name]=obj;
     }
-}(function(){
+}('molt',function(){
     
     /*
         Create a molt image

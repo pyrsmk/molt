@@ -1,10 +1,10 @@
 /*
     molt, image updater for responsiveness
 
-    Version : 1.0.1
-    Author  : Aurélien Delogu (dev@dreamysource.fr)
-    URL     : https://github.com/pyrsmk/molt
-    License : MIT
+    Version:    1.0.1
+    Author:     Aurélien Delogu (dev@dreamysource.fr)
+    Homepage:   https://github.com/pyrsmk/molt
+    License:    MIT
 */
 
 (function(name,obj){

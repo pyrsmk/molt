@@ -1,7 +1,7 @@
 OLD		= ls -l | grep .js | sed -r 's/.+\s(\S+)/\1/'
 NAME	= ls src | sed -r 's/ender\.js|package\.json|\s+//' | sed -nr 's/(.+)\.js/\1/p'
-VERSION	= grep '"version"' src/package.json | sed -r 's/.*:\s*"(.+)".*/\1/'
-URL		= grep '"homepage"' src/package.json | sed -r 's/.*:\s*"(.+)".*/\1/'
+VERSION	= grep -m 1 Version src/\`${NAME}\`.js | sed -r 's/.*:\s*(.+)/\1/'
+URL		= grep -m 1 Homepage src/\`${NAME}\`.js | sed -r 's/.*:\s*(.+)/\1/'
 
 all: lint minify
 

@@ -5,6 +5,5 @@
     "curly"     : true,
     "eqnull"    : true,
     "newcap"    : true,
-    "undef"     : true,
-    "onevar"    : true
+    "undef"     : true
 }

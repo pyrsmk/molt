@@ -1,18 +1,18 @@
 /*
     molt, image updater for responsiveness
 
-    Version:    1.0.1
+    Version:    1.0.2
     Author:     Aurélien Delogu (dev@dreamysource.fr)
     Homepage:   https://github.com/pyrsmk/molt
     License:    MIT
 */
 
-(function(name,obj){
+(function(name,def){
     if(typeof module!='undefined'){
-        module.exports=obj;
+        module.exports=def;
     }
     else{
-        this[name]=obj;
+        this[name]=def;
     }
 }('molt',function(){
     
@@ -35,7 +35,8 @@
         */
         var refresh=function(){
             // Guess the current mode
-            var width=typeof window.innerWidth=='number'?window.innerWidth:document.documentElement.clientWidth,
+            var innerWidth=window.innerWidth,
+                width=typeof innerWidth=='number'?innerWidth:document.documentElement.clientWidth,
                 mode,
                 last,
                 all;
@@ -81,11 +82,13 @@
         // Update node
         refresh();
         // Catch resize event
-        if(window.addEventListener){
-            window.addEventListener("resize",refresh,false);
+        var addEventListener=window.addEventListener,
+            attachEvent=window.attachEvent;
+        if(addEventListener){
+            addEventListener("resize",refresh,false);
         }
-        else if(window.attachEvent){
-            window.attachEvent("onresize",refresh);
+        else if(attachEvent){
+            attachEvent("onresize",refresh);
         }
 
     };

@@ -31,45 +31,55 @@
     return function(node,dimensions,onrefresh){
 
         /*
-            Refresh images for that new window size
+            Guess the current mode
+            
+            Return
+                integer
         */
-        var refresh=function(){
-            // Guess the current mode
-            var innerWidth=this.innerWidth,
-                width=W(),
-                mode,
-                a;
+        var a,guessCurrentMode=function(){
+            var mode,
+                width=W();
             for(mode in dimensions){
+                if(!a){
+                    a=mode;
+                }
                 if(width<mode){
-                    mode=a;
                     break;
                 }
                 a=mode;
             }
-            // Define node styles
+            return a;
+        },
+
+        /*
+            Refresh images for that new window size
+        */
+        refresh=function(){
+            // Guess the current mode
+            var mode=guessCurrentMode();
+            // Update node
             if(dimensions[mode].length){
                 node.width=dimensions[mode][0];
                 node.height=dimensions[mode][1];
+                // Get URL from ALL attribute
                 if(a=node.getAttribute('all')){
                     node.src=a.replace(/\{mode\}/g,mode).
                                replace(/\{width\}/g,dimensions[mode][0]).
                                replace(/\{height\}/g,dimensions[mode][1]);
                 }
+                // Get URL from specific mode attribute
                 else{
                     node.src=node.getAttribute(mode);
+                }// User-side node refresh
+                if(onrefresh){
+                    onrefresh(node);
                 }
             }
             // Hide node
             else{
-                log('hide');
                 node.style.display='none';
             }
-            // Update node styles
-            if(onrefresh){
-                onrefresh(node);
-            }
-        },
-        addEventListener=addEventListener;
+        };
 
         // Get out!
         if(typeof node!='object' || typeof dimensions!='object'){

@@ -1,5 +1,5 @@
 /*
-    molt, image updater for responsiveness
+    molt, image updater for responsive designs
 
     Version:    1.0.2
     Author:     Aurélien Delogu (dev@dreamysource.fr)
@@ -23,7 +23,7 @@
             object node         : a DOM node
             object dimensions   : image resolutions corresponding to the specified mode
                                   (mode,[width,height]) pair list
-            function onrefresh  : called when image has been updated
+            function onrefresh  : called when image has been refreshed
 
         Return
             molt
@@ -35,26 +35,25 @@
         */
         var refresh=function(){
             // Guess the current mode
-            var innerWidth=window.innerWidth,
-                width=typeof innerWidth=='number'?innerWidth:document.documentElement.clientWidth,
+            var innerWidth=this.innerWidth,
+                width=W(),
                 mode,
-                last,
-                all;
+                a;
             for(mode in dimensions){
                 if(width<mode){
-                    mode=last;
+                    mode=a;
                     break;
                 }
-                last=mode;
+                a=mode;
             }
             // Define node styles
             if(dimensions[mode].length){
                 node.width=dimensions[mode][0];
                 node.height=dimensions[mode][1];
-                if(all=node.getAttribute('all')){
-                    node.src=all.replace(/\{mode\}/g,mode).
-                                 replace(/\{width\}/g,dimensions[mode][0]).
-                                 replace(/\{height\}/g,dimensions[mode][1]);
+                if(a=node.getAttribute('all')){
+                    node.src=a.replace(/\{mode\}/g,mode).
+                               replace(/\{width\}/g,dimensions[mode][0]).
+                               replace(/\{height\}/g,dimensions[mode][1]);
                 }
                 else{
                     node.src=node.getAttribute(mode);
@@ -62,34 +61,28 @@
             }
             // Hide node
             else{
+                log('hide');
                 node.style.display='none';
             }
             // Update node styles
-            onrefresh(node);
-        };
+            if(onrefresh){
+                onrefresh(node);
+            }
+        },
+        addEventListener=addEventListener;
 
-        // Prepare data
+        // Get out!
         if(typeof node!='object' || typeof dimensions!='object'){
             return;
         }
-        if(typeof onrefresh!='function'){
-            onrefresh=function(){};
-        }
         // Init the node
-        if(node.alt===undefined){
+        if(!node.alt){
             node.alt='';
         }
         // Update node
         refresh();
         // Catch resize event
-        var addEventListener=window.addEventListener,
-            attachEvent=window.attachEvent;
-        if(addEventListener){
-            addEventListener("resize",refresh,false);
-        }
-        else if(attachEvent){
-            attachEvent("onresize",refresh);
-        }
+        W(refresh);
 
     };
 

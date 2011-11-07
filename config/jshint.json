@@ -1,9 +1,13 @@
 {
     "browser"   : true,
-    "predef"    : ["module"],
+    "predef"    : [
+        "module",
+        "addEventListener",
+        "attachEvent",
+        "W"
+    ],
     "boss"      : true,
     "curly"     : true,
     "eqnull"    : true,
-    "newcap"    : true,
     "undef"     : true
 }

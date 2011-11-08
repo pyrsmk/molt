@@ -1,99 +1,101 @@
 /*
     molt, image updater for responsive designs
 
-    Version:    1.0.2
+    Version:    2.0.0
     Author:     Aurélien Delogu (dev@dreamysource.fr)
     Homepage:   https://github.com/pyrsmk/molt
     License:    MIT
 */
 
-(function(name,def){
-    if(typeof module!='undefined'){
-        module.exports=def;
-    }
-    else{
-        this[name]=def;
-    }
-}('molt',function(){
+this.molt=function(){
     
     /*
-        Create a molt image
-
-        Parameters
-            object node         : a DOM node
-            object dimensions   : image resolutions corresponding to the specified mode
-                                  (mode,[width,height]) pair list
-            function onrefresh  : called when image has been refreshed
-
-        Return
-            molt
+        Array nodes: molt images
     */
-    return function(node,dimensions,onrefresh){
-
-        /*
-            Guess the current mode
-            
-            Return
-                integer
-        */
-        var a,guessCurrentMode=function(){
-            var mode,
-                width=W();
-            for(mode in dimensions){
-                if(!a){
-                    a=mode;
+    var attributes='attributes',
+        listeners=[],
+        nodes=[],
+        i,
+    
+    /*
+        Refresh image nodes
+    */
+    refresh=function(){
+        var j,
+            url,
+            node,
+            mode,
+            width=W(),
+            stack;
+        // Browse molt images
+        i=-1;
+        while(node=nodes[++i]){
+            // Guess the current mode for that image
+            for(j in (url=node[attributes].url).match(/\{.*\}/)[1].split(/\s*,\s*/)){
+                if(!mode){
+                    mode=j;
                 }
-                if(width<mode){
+                if(width<j){
                     break;
                 }
-                a=mode;
-            }
-            return a;
-        },
-
-        /*
-            Refresh images for that new window size
-        */
-        refresh=function(){
-            // Guess the current mode
-            var mode=guessCurrentMode();
-            // Update node
-            if(dimensions[mode].length){
-                node.width=dimensions[mode][0];
-                node.height=dimensions[mode][1];
-                // Get URL from ALL attribute
-                if(a=node.getAttribute('all')){
-                    node.src=a.replace(/\{mode\}/g,mode).
-                               replace(/\{width\}/g,dimensions[mode][0]).
-                               replace(/\{height\}/g,dimensions[mode][1]);
-                }
-                // Get URL from specific mode attribute
-                else{
-                    node.src=node.getAttribute(mode);
-                }// User-side node refresh
-                if(onrefresh){
-                    onrefresh(node);
-                }
+                mode=j;
             }
             // Hide node
-            else{
+            if(mode[0]=='!'){
                 node.style.display='none';
             }
-        };
-
-        // Get out!
-        if(typeof node!='object' || typeof dimensions!='object'){
-            return;
+            // Refresh src
+            else{
+                node.src=url.replace(/\{.+\}/g,mode);
+            }
+            // Call node listeners
+            if(stack=listeners[url]){
+                j=stack.length;
+                while(j){
+                    stack[--j]();
+                }
+            }
         }
-        // Init the node
-        if(!node.alt){
-            node.alt='';
+    };
+    
+    return {
+        
+        /*
+            Add a listener to the stack
+            
+                Object node         : node to listen
+                Function callback   : function to call when the node has been refreshed
+        */
+        listen:function(node,callback){
+            // Format
+            node=node[attributes].url;
+            // Init node stack
+            if(!listeners[node]){
+                listeners[node]=[];
+            }
+            // Add listener
+            listeners[node].push(callback);
+        },
+        
+        /*
+            Discover molt images
+        */
+        discover:function(){
+            // Discover images
+            var imgs=document.getNodesByTagName('img'),
+                i=imgs.length;
+            while(i){
+                // Only accept images with URL attribute set
+                if(imgs[--i][attributes].url){
+                    nodes.push(imgs[i]);
+                }
+            }
+            // Update images
+            refresh();
+            // Catch events
+            W(refresh);
         }
-        // Update node
-        refresh();
-        // Catch resize event
-        W(refresh);
-
+        
     };
 
-}()));
+}();

@@ -1,11 +1,6 @@
 {
     "browser"   : true,
-    "predef"    : [
-        "module",
-        "addEventListener",
-        "attachEvent",
-        "W"
-    ],
+    "predef"    : ["W"],
     "boss"      : true,
     "curly"     : true,
     "eqnull"    : true,

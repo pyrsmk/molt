@@ -43,7 +43,9 @@ To finish, you can apply several properties or launch some actions on a specific
         function(node){
             // Force image displaying at each refresh
             /*
-                It's especially needed when you've set an empty mode: when the empty mode is reached, display:none is applied but since molt can't know what primary display property is set, the user must set it himself
+                It's especially needed when you've set an empty mode:
+                when the empty mode is reached, display:none is applied
+                but since molt can't know what primary display property is set, the user must set it himself
             */
             node.style.display='block';
         }

@@ -12,7 +12,7 @@ this.molt=function(){
     /*
         Array nodes: molt images
     */
-    var attributes='attributes',
+    var getAttribute='getAttribute',
         listeners=[],
         nodes=[],
         i,
@@ -24,35 +24,33 @@ this.molt=function(){
         var j,
             url,
             node,
-            mode,
+            modes,
             width=W(),
             stack;
         // Browse molt images
         i=-1;
         while(node=nodes[++i]){
             // Guess the current mode for that image
-            for(j in (url=node[attributes].url).match(/\{.*\}/)[1].split(/\s*,\s*/)){
-                if(!mode){
-                    mode=j;
-                }
-                if(width<j){
+            modes=(url=node.getAttribute('url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
+            j=modes.length;
+            while(j){
+                if(width>modes[--j].match(/^!?(.+)/)[1]){
                     break;
                 }
-                mode=j;
             }
             // Hide node
-            if(mode[0]=='!'){
+            if(modes[j][0]=='!'){
                 node.style.display='none';
             }
             // Refresh src
             else{
-                node.src=url.replace(/\{.+\}/g,mode);
-            }
-            // Call node listeners
-            if(stack=listeners[url]){
-                j=stack.length;
-                while(j){
-                    stack[--j]();
+                node.src=url.replace(/\{.+\}/g,modes[j]);
+                // Call node listeners
+                if(stack=listeners[url]){
+                    j=stack.length;
+                    while(j){
+                        stack[--j](node);
+                    }
                 }
             }
         }
@@ -68,7 +66,7 @@ this.molt=function(){
         */
         listen:function(node,callback){
             // Format
-            node=node[attributes].url;
+            node=node[getAttribute]('url');
             // Init node stack
             if(!listeners[node]){
                 listeners[node]=[];
@@ -82,11 +80,11 @@ this.molt=function(){
         */
         discover:function(){
             // Discover images
-            var imgs=document.getNodesByTagName('img'),
+            var imgs=document.getElementsByTagName('img'),
                 i=imgs.length;
             while(i){
                 // Only accept images with URL attribute set
-                if(imgs[--i][attributes].url){
+                if(imgs[--i][getAttribute]('url')){
                     nodes.push(imgs[i]);
                 }
             }

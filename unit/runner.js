@@ -5,10 +5,10 @@ domReady(function(){
         test('Modes',7,function(){
             log('Please play with window size to execute all tests');
             // Get nodes
-            var nodes=document.getElementsByTagName('img'),
+            var nodes=$('img'),
                 a,b,c,d,e,f,g;
             // 320 and 768 with first image
-            molt.listen(nodes[0],function(node){
+            $(nodes[0]).listen(function(node){
                 var width=W();
                 if(!g && width<320){
                     ok(node.src.indexOf('images/img1-320.jpg')!=-1,'320 mode with first image when width is less than 320px');
@@ -24,7 +24,7 @@ domReady(function(){
                 }
             });
             // 320 and 768 with second image
-            molt.listen(nodes[1],function(node){
+            $(nodes[1]).listen(function(node){
                 var width=W();
                 if(!f && width<320){
                     ok(node.src.indexOf('images/img2-320.jpg')!=-1,'320 mode with second image when width is less than 320px');
@@ -40,7 +40,7 @@ domReady(function(){
                 }
             });
             // Discover images
-            molt.discover();
+            $.discover();
             // !480
             W(function(){
                 if(!a){

@@ -53,6 +53,19 @@ To finish, you can apply several properties or launch some actions on a specific
 
 Of course, it's _really_ recommended to listen nodes before calling `molt.discover()`.
 
+Ender integration
+-----------------
+
+Some good news: molt is compatible with [ender](http://ender.no.de) :)
+
+    var images=$('img');
+    $(images[0]).listen(
+        function(){
+            // blah!
+        }
+    );
+    $.discover();
+
 License
 -------
 

@@ -1,4 +1,4 @@
-molt 2.0.0
+molt 2.0.1
 ==========
 
 The idea to develop molt comes from a few observations:

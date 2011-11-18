@@ -5,42 +5,48 @@ domReady(function(){
         test('Modes',7,function(){
             log('Please play with window size to execute all tests');
             // Get nodes
-            var nodes=$('img'),
+            var nodes=document.getElementsByTagName('img'),
                 a,b,c,d,e,f,g;
             // 320 and 768 with first image
-            $(nodes[0]).listen(function(node){
-                var width=W();
-                if(!g && width<320){
-                    ok(node.src.indexOf('images/img1-320.jpg')!=-1,'320 mode with first image when width is less than 320px');
-                    g=true;
+            molt.listen(
+                nodes[0],
+                function(node){
+                    var width=W();
+                    if(!g && width<320){
+                        ok(node.src.indexOf('images/img1-320.jpg')!=-1,'320 mode with first image when width is less than 320px');
+                        g=true;
+                    }
+                    else if(!b && width<480){
+                        ok(node.src.indexOf('images/img1-320.jpg')!=-1,'320 mode with first image');
+                        b=true;
+                    }
+                    else if(!c && width>=768){
+                        ok(node.src.indexOf('images/img1-768.jpg')!=-1,'768 mode with first image');
+                        c=true;
+                    }
                 }
-                else if(!b && width<480){
-                    ok(node.src.indexOf('images/img1-320.jpg')!=-1,'320 mode with first image');
-                    b=true;
-                }
-                else if(!c && width>=768){
-                    ok(node.src.indexOf('images/img1-768.jpg')!=-1,'768 mode with first image');
-                    c=true;
-                }
-            });
+            );
             // 320 and 768 with second image
-            $(nodes[1]).listen(function(node){
-                var width=W();
-                if(!f && width<320){
-                    ok(node.src.indexOf('images/img2-320.jpg')!=-1,'320 mode with second image when width is less than 320px');
-                    f=true;
+            molt.listen(
+                nodes[1],
+                function(node){
+                    var width=W();
+                    if(!f && width<320){
+                        ok(node.src.indexOf('images/img2-320.jpg')!=-1,'320 mode with second image when width is less than 320px');
+                        f=true;
+                    }
+                    else if(!d && width<480){
+                        ok(node.src.indexOf('images/img2-320.jpg')!=-1,'320 mode with second image');
+                        d=true;
+                    }
+                    else if(!e && width>=768){
+                        ok(node.src.indexOf('images/img2-768.jpg')!=-1,'768 mode with second image');
+                        e=true;
+                    }
                 }
-                else if(!d && width<480){
-                    ok(node.src.indexOf('images/img2-320.jpg')!=-1,'320 mode with second image');
-                    d=true;
-                }
-                else if(!e && width>=768){
-                    ok(node.src.indexOf('images/img2-768.jpg')!=-1,'768 mode with second image');
-                    e=true;
-                }
-            });
+            );
             // Discover images
-            $.discover();
+            molt.discover();
             // !480
             W(function(){
                 if(!a){
@@ -51,6 +57,11 @@ domReady(function(){
                     }
                 }
             });
+        });
+        
+        test('Ender',2,function(){
+            ok($($('img')[0]).listen,'Listen method registered');
+            ok($.discover,'Discover method registered');
         });
 
     });

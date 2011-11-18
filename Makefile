@@ -12,7 +12,7 @@ minify:
 	@rm -f `${OLD}`
 	@rm -f `${OLD}`
 	@uglifyjs -nc src/`${NAME}`.js > `${NAME}`-`${VERSION}`.min.js
-	@cat lib/`${W}` `${NAME}`-`${VERSION}`.min.js > `${NAME}`-W-`${VERSION}`.min.js
+	@cat lib/`${W}` `${NAME}`-`${VERSION}`.min.js > `${NAME}`-`${VERSION}`.W.min.js
 
 instdeps:
 	@npm install jshint -g

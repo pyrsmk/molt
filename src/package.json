@@ -1,7 +1,7 @@
 {
     "name"          : "molt",
     "description"   : "Image updater for responsive designs",
-    "version"       : "2.0.2",
+    "version"       : "2.0.3",
     "author"        : "Aurélien Delogu <pyrsmk@dreamysource.fr> (http://dreamysource.fr)",
     "repository"    : {
         "type"  : "git",

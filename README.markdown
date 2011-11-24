@@ -1,4 +1,4 @@
-molt 2.0.2
+molt 2.0.3
 ==========
 
 The idea to develop molt comes from a few observations:
@@ -14,7 +14,7 @@ W
 
 Molt is [W](https://github.com/pyrsmk/W) dependent. So, if you've planned to use W in your website take the `molt-xxx.min.js` version, otherwise please take the `molt-W-xxx.min.js` one.
 
-It should be a good idea to read the W README file to well understand how molt works.
+It should be a good idea to read the W README file to well understand how it interacts with molt.
 
 Syntax
 ------

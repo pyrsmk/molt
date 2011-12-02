@@ -4,9 +4,9 @@ molt 2.0.3
 The idea to develop molt comes from a few observations:
 
 - in responsive development we need to provide scaled scripts and images to not overload bandwidth and devices
-- web developers often provide images for all medias with only on-the-fly resizing, that is not optimized at all
+- web developers often provide images for all medias with only on-the-fly resizing, that is not optimized at all and not nice on all browsers
 - apply a `display:none` property to an `img` is not sufficient, the browser still download the file
-- Responsive-Images and responsive-images-alt don't support several image dimensions and the first one is a bit intrusive to myself
+- [Responsive-Images](https://github.com/filamentgroup/Responsive-Images) and [responsive-images-alt](https://github.com/allmarkedup/responsive-images-alt) don't support several image dimensions and the first one is a bit intrusive to myself
 
 Then we need a library that automatically switch images according to the current window (or media device) resolution. This way, minimal bandwith is used and responsiveness is on our hands again ;)
 

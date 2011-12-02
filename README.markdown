@@ -6,16 +6,11 @@ The idea to develop molt comes from a few observations:
 - in responsive development we need to provide scaled scripts and images to not overload bandwidth and devices
 - web developers often provide images for all medias with only on-the-fly resizing, that is not optimized at all and not nice on all browsers
 - apply a `display:none` property to an `img` is not sufficient, the browser still download the file
-- [Responsive-Images](https://github.com/filamentgroup/Responsive-Images) and [responsive-images-alt](https://github.com/allmarkedup/responsive-images-alt) don't support several image dimensions and the first one is a bit intrusive to myself
+- [Responsive-Images](https://github.com/filamentgroup/Responsive-Images) and [responsive-images-alt](https://github.com/allmarkedup/responsive-images-alt) don't support several image dimensions and the first one is a bit intrusive
+- [responsiveImages](https://github.com/jackfranklin/responsiveImages) is interesting but can't simply handle dynamic content generation on server side (with template engines)
+- it also could happen that we don't need images at all for 320px devices (per example)
 
-Then we need a library that automatically switch images according to the current window (or media device) resolution. This way, minimal bandwith is used and responsiveness is on our hands again ;)
-
-W
--
-
-Molt is [W](https://github.com/pyrsmk/W) dependent. So, if you've planned to use W in your website take the `molt-xxx.min.js` version, otherwise please take the `molt-W-xxx.min.js` one.
-
-It should be a good idea to read the W README file to well understand how it interacts with molt.
+Molt try to solve all these problems. Moreover it's [W](https://github.com/pyrsmk/W) dependent to handle responsive events (it should be a good idea to read the W README file to well understand how it interacts with molt). So, if you've planned to use W in your website take the `molt-xxx.min.js` version, otherwise please take the `molt-W-xxx.min.js` one.
 
 Syntax
 ------

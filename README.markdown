@@ -6,6 +6,7 @@ The idea to develop molt comes from a few observations:
 - in responsive development we need to provide scaled scripts and images to not overload bandwidth and devices
 - web developers often provide images for all medias with only on-the-fly resizing, that is not optimized at all
 - apply a `display:none` property to an `img` is not sufficient, the browser still download the file
+- Responsive-Images and responsive-images-alt don't support several image dimensions and the first one is a bit intrusive to myself
 
 Then we need a library that automatically switch images according to the current window (or media device) resolution. This way, minimal bandwith is used and responsiveness is on our hands again ;)
 
@@ -19,7 +20,7 @@ It should be a good idea to read the W README file to well understand how it int
 Syntax
 ------
 
-A molt image is set as a regular `img` tag on your HTML body (for dynamic generation purposes, on server side) with an `url` attribute:
+A molt image is set as a regular `img` tag on your HTML body (for dynamic generation purposes on server side), but with an `url` attribute:
 
     <img url="images/img{320,1024}.jpg" alt="">
 
@@ -33,7 +34,7 @@ Moreover, note that you can 'negate' a mode, like `!320`, to make your images hi
 
     molt.discover();
 
-To finish, you can apply several properties or launch some actions on a specific refreshed node (when a zoom event has been catched by molt, per example) by listening is refreshing state:
+To finish, you can apply several properties or launch some actions on a specific refreshed node (when a zoom event has been catched, per example) by listening its refreshing state:
 
     // Get your image node
     var img=$('#foo img')[0];
@@ -43,9 +44,9 @@ To finish, you can apply several properties or launch some actions on a specific
         function(node){
             // Force image displaying at each refresh
             /*
-                It's especially needed when you've set an empty mode:
-                when the empty mode is reached, display:none is applied
-                but since molt can't know what primary display property is set, the user must set it himself
+                It's especially needed when you've set a negate mode:
+                when the negate mode is reached, display:none is applied
+                but since, currently, molt can't know what primary display property is set, the user must set it himself
             */
             node.style.display='block';
         }

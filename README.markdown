@@ -49,6 +49,8 @@ To finish, you can apply several properties or launch some actions on a specific
 
 Of course, it's _really_ recommended to listen nodes before calling `molt.discover()`.
 
+Oh yeah... If you want to handle non-javascript users to make them displaying images even so: forget it. There's, currently, no clean solution for that.
+
 Ender integration
 -----------------
 

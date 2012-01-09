@@ -1,7 +1,7 @@
 /*
     molt, image updater for responsive designs
 
-    Version:    2.0.3
+    Version:    2.0.4
     Author:     Aurélien Delogu (dev@dreamysource.fr)
     Homepage:   https://github.com/pyrsmk/molt
     License:    MIT
@@ -30,6 +30,7 @@
     refresh=function(){
         var j,
             url,
+            display,
             node,
             modes,
             width=W(),
@@ -45,12 +46,21 @@
                     break;
                 }
             }
-            // Hide node
+            // Negative mode
             if(modes[j].charAt(0)=='!'){
+                // Hide image
                 node.style.display='none';
             }
-            // Refresh src
+            // Normal mode
             else{
+                // Show image
+                if(display=node.getAttribute('display')){
+                    node.style.display=display;
+                }
+                else{
+                    node.style.display='inline';
+                }
+                // Refresh src
                 node.src=url.replace(/\{.+\}/g,modes[j]);
                 // Call node listeners
                 if(stack=listeners[url]){
@@ -81,7 +91,7 @@
             // Add listener
             listeners[node].push(callback);
         },
-        
+
         /*
             Discover molt images
         */

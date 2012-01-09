@@ -1,4 +1,4 @@
-molt 2.0.3
+molt 2.0.4
 ==========
 
 The idea to develop molt comes from a few observations:
@@ -10,14 +10,16 @@ The idea to develop molt comes from a few observations:
 - [responsiveImages](https://github.com/jackfranklin/responsiveImages) is interesting but can't simply handle dynamic content generation on server side (with template engines)
 - it also could happen that we don't need images at all for 320px devices (per example)
 
-Molt try to solve all these problems. Moreover it's [W](https://github.com/pyrsmk/W) dependent to handle responsive events (it should be a good idea to read the W README file to well understand how it interacts with molt). So, if you've planned to use W in your website take the `molt-xxx.min.js` version, otherwise please take the `molt-W-xxx.min.js` one.
+Molt try to solve all these problems.
+
+Also, it's [W](https://github.com/pyrsmk/W) dependent and so can handle responsive events (it should be a good idea to read the W README file to well understand how it interacts with molt). So, if you've planned to use W in your website take the `molt-xxx.min.js` version, otherwise please take the `molt-W-xxx.min.js` one.
 
 Syntax
 ------
 
 A molt image is set as a regular `img` tag on your HTML body (for dynamic generation purposes on server side), but with an `url` attribute:
 
-    <img url="images/img{320,1024}.jpg" alt="">
+    <img url="images/img{320,1024}.jpg" display="block" alt="">
 
 Numbers in brackets are modes. The selected mode will replace brackets: if the selected mode is 320 then the URL will look like `images/img320.jpg`. A mode is chosen like this:
 
@@ -25,7 +27,11 @@ Numbers in brackets are modes. The selected mode will replace brackets: if the s
 - for a 480px width, the 320 mode again
 - but if a 1280px resolution is detected, the 1024 mode is chosen
 
-Moreover, note that you can 'negate' a mode, like `!320`, to make your images hidden for that mode (please take a look at the listener example to know how deal with that special mode). Now, inside a script, molt must discover all your molt images:
+Moreover, note that you can 'negate' a mode, like `!320`, to make your images hidden for that mode (please take a look at the listener example to know how deal with that special mode).
+
+Finally, the `display` attribute is used when a previously hidden image (by a negative mode) show up again. Currently, there's no way to distinguish which display CSS property is set on a node. So, molt will reset that display property to the `display` attribute value, `inline` otherwise.
+
+Now, inside a script, molt must discover all your molt images to automatically manage them all:
 
     molt.discover();
 

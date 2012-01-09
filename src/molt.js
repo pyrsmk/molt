@@ -20,6 +20,7 @@
         Array nodes: molt images
     */
     var getAttribute='getAttribute',
+        triggers=[],
         listeners=[],
         nodes=[],
         i,
@@ -65,10 +66,10 @@
                 // Refresh src
                 node.src=url.replace(/\{.+\}/g,modes[j]);
                 // Call node listeners
-                if(stack=listeners[url]){
-                    j=stack.length;
-                    while(j){
-                        stack[--j].apply(node);
+                j=triggers.length;
+                while(j){
+                    if(triggers[--j]==node){
+                        listeners[j].apply(node,[modes[j].]);
                     }
                 }
             }
@@ -84,14 +85,8 @@
                 Function callback   : function to call when the node has been refreshed
         */
         listen:function(node,callback){
-            // Format
-            node=node[getAttribute]('url');
-            // Init node stack
-            if(!listeners[node]){
-                listeners[node]=[];
-            }
-            // Add listener
-            listeners[node].push(callback);
+            triggers.push(node);
+            listeners.push(callback);
         },
 
         /*

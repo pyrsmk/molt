@@ -30,6 +30,7 @@
     */
     refresh=function(){
         var j,
+            k,
             url,
             display,
             node,
@@ -66,10 +67,10 @@
                 // Refresh src
                 node.src=url.replace(/\{.+\}/g,modes[j]);
                 // Call node listeners
-                j=triggers.length;
-                while(j){
-                    if(triggers[--j]==node){
-                        listeners[j].apply(node,[modes[j].]);
+                k=triggers.length;
+                while(k){
+                    if(triggers[--k]==node){
+                        listeners[k].apply(node,[modes[j]]);
                     }
                 }
             }

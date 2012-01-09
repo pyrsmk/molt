@@ -1,4 +1,4 @@
-molt 2.0.5
+molt 2.1.0
 ==========
 
 The idea to develop molt comes from a few observations:
@@ -42,16 +42,17 @@ To finish, you can apply several properties or launch some actions on a specific
     // Add a listener
     molt.listen(
         img,
-        function(node){
-            // Force image displaying at each refresh
-            /*
-                It's especially needed when you've set a negate mode:
-                when the negate mode is reached, display:none is applied
-                but since, currently, molt can't know what primary display property is set, the user must set it himself
-            */
-            node.style.display='block';
+        function(mode){
+            if(mode==320){
+                this.style.backgroundColor='red';
+            }
+            else{
+                this.style.backgroundColor='green';
+            }
         }
     );
+
+Nodes are passed to the callback with the `this` keyword and current mode is directly accessible too. But, note that callbacks are only launched on non-negative modes.
 
 Of course, it's _really_ recommended to listen nodes before calling `molt.discover()`.
 

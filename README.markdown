@@ -7,7 +7,7 @@ The idea to develop molt comes from a few observations:
 - web developers often provide images for all medias with only on-the-fly resizing, that is not optimized at all and not nice on all browsers
 - apply a `display:none` property to an `img` is not sufficient, the browser still download the file
 - [Responsive-Images](https://github.com/filamentgroup/Responsive-Images) and [responsive-images-alt](https://github.com/allmarkedup/responsive-images-alt) don't support several image dimensions and the first one is a bit intrusive
-- [responsiveImages](https://github.com/jackfranklin/responsiveImages) is interesting but can't simply handle dynamic content generation on server side (with template engines)
+- [responsiveImages](https://github.com/jackfranklin/responsiveImages) is interesting but can't handle dynamic content generation on server side (with template engines)
 - it also could happen that we don't need images at all for 320px devices (per example)
 
 Molt try to solve all these problems.
@@ -29,13 +29,9 @@ Numbers in brackets are modes. The selected mode will replace brackets: if the s
 
 Moreover, note that you can 'negate' a mode, like `!320`, to make your images hidden for that mode (please take a look at the listener example to know how deal with that special mode).
 
-Finally, the `display` attribute is used when a previously hidden image (by a negative mode) show up again. Currently, there's no way to distinguish which display CSS property is set on a node. So, molt will reset that display property to the `display` attribute value, `inline` otherwise.
+Finally, the `display` attribute is used when a previously hidden image (by a negative mode) shows up again. Currently, there's no way to distinguish which display CSS property is set on a node (really, no way at all, coming from a lack of specs). So, molt will reset that display property to the `display` attribute value, `inline` otherwise.
 
-Now, inside a script, molt must discover all your molt images to automatically manage them all:
-
-    molt.discover();
-
-To finish, you can apply several properties or launch some actions on a specific refreshed node (when a zoom event has been catched, per example) by listening its refreshing state:
+You can apply several properties or launch some actions on a specific refreshed node (when a zoom event has been catched, per example) by listening its refreshing state:
 
     // Get your image node
     var img=$('#foo img')[0];
@@ -54,7 +50,9 @@ To finish, you can apply several properties or launch some actions on a specific
 
 Nodes are passed to the callback with the `this` keyword and current mode is directly accessible too. But, note that callbacks are only launched on non-negative modes.
 
-Of course, it's _really_ recommended to listen nodes before calling `molt.discover()`.
+To finish, molt must discover all your molt images to automatically manage them all:
+
+    molt.discover();
 
 Oh yeah... If you want to handle non-javascript users to make them displaying images even so: forget it. There's, currently, no clean solution for that.
 

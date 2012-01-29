@@ -27,6 +27,8 @@ Numbers in brackets are modes. The selected mode will replace brackets: if the s
 - for a 480px width, the 320 mode again
 - but if a 1280px resolution is detected, the 1024 mode is chosen
 
+You can also map modes into different values, for example using `images/img-{320=small,1024=huge}.jpg` to load either `img-small.jpg` or `img-huge.jpg`.
+
 Moreover, note that you can 'negate' a mode, like `!320`, to make your images hidden for that mode (please take a look at the listener example to know how deal with that special mode).
 
 Finally, the `display` attribute is used when a previously hidden image (by a negative mode) shows up again. Currently, there's no way to distinguish which display CSS property is set on a node (really, no way at all, coming from a lack of specs). So, molt will reset that display property to the `display` attribute value, `inline` otherwise.

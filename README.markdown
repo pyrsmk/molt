@@ -1,4 +1,4 @@
-molt 2.2.0
+molt 2.3.0
 ==========
 
 The idea to develop molt comes from a few observations:
@@ -19,7 +19,7 @@ Syntax
 
 A molt image is set as a regular `img` tag on your HTML body (for dynamic generation purposes on server side), but with an `url` attribute:
 
-    <img url="images/img{320,1024}.jpg" display="block" alt="">
+    <img data-url="images/img{320,1024}.jpg" display="block" alt="">
 
 Numbers in brackets are modes. The selected mode will replace brackets: if the selected mode is 320 then the URL will look like `images/img320.jpg`. A mode is chosen like this:
 

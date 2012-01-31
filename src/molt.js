@@ -1,7 +1,7 @@
 /*
     molt, image updater for responsive designs
 
-    Version:    2.2.0
+    Version:    2.3.0
     Author:     Aurélien Delogu (dev@dreamysource.fr)
     Homepage:   https://github.com/pyrsmk/molt
     License:    MIT
@@ -43,7 +43,7 @@
         i=-1;
         while(node=nodes[++i]){
             // Guess the current mode for that image
-            modes=(url=node.getAttribute('url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
+            modes=(url=node.getAttribute('data-url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
             for(l=0;l<modes.length;l++){
 				mapping = modes[l].split(":");
                 if(mapping.length===1){
@@ -108,8 +108,8 @@
             var imgs=document.getElementsByTagName('img'),
                 i=imgs.length;
             while(i){
-                // Only accept images with URL attribute set
-                if(imgs[--i][getAttribute]('url')){
+                // Only accept images with data-url attribute set
+                if(imgs[--i][getAttribute]('data-url')){
                     nodes.push(imgs[i]);
                 }
             }

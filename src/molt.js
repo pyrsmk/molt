@@ -45,7 +45,7 @@
             // Guess the current mode for that image
             modes=(url=node.getAttribute('url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
             for(l=0;l<modes.length;l++){
-				mapping = modes[l].split("=");
+				mapping = modes[l].split(":");
                 if(mapping.length===1){
                     modes[l] = [mapping[0], mapping[0]];
                 }else{

@@ -1,4 +1,4 @@
-molt 2.1.0
+molt 2.2.0
 ==========
 
 The idea to develop molt comes from a few observations:
@@ -27,7 +27,7 @@ Numbers in brackets are modes. The selected mode will replace brackets: if the s
 - for a 480px width, the 320 mode again
 - but if a 1280px resolution is detected, the 1024 mode is chosen
 
-You can also map modes into different values, for example using `images/img-{320=small,1024=huge}.jpg` to load either `img-small.jpg` or `img-huge.jpg`.
+You can also map modes into different values, for example using `images/img-{320:small,1024:huge}.jpg` to load either `img-small.jpg` or `img-huge.jpg`.
 
 Moreover, note that you can 'negate' a mode, like `!320`, to make your images hidden for that mode (please take a look at the listener example to know how deal with that special mode).
 

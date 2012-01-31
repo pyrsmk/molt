@@ -6,15 +6,15 @@ domReady(function(){
             log('Please play with window size to execute all tests');
             // Get nodes
             var nodes=document.getElementsByTagName('img'),
-                a,b,c,d,e,f,g;
+                a,b,c,d,e,f,g,h,i,j;
             // 320 and 768 with first image
             molt.listen(
                 nodes[0],
                 function(mode){
                     var width=W();
-                    if(!g && width<320 && mode==320){
+                    if(!j && width<320 && mode==320){
                         ok(this.src.indexOf('images/img1-320.jpg')!=-1,'320 mode with first image when width is less than 320px');
-                        g=true;
+                        j=true;
                     }
                     else if(!b && width<480 && mode==320){
                         ok(this.src.indexOf('images/img1-320.jpg')!=-1,'320 mode with first image');
@@ -31,9 +31,9 @@ domReady(function(){
                 nodes[1],
                 function(mode){
                     var width=W();
-                    if(!f && width<320 && mode==320){
+                    if(!i && width<320 && mode==320){
                         ok(this.src.indexOf('images/img2-320.jpg')!=-1,'320 mode with second image when width is less than 320px');
-                        f=true;
+                        i=true;
                     }
                     else if(!d && width<480 && mode==320){
                         ok(this.src.indexOf('images/img2-320.jpg')!=-1,'320 mode with second image');
@@ -45,6 +45,25 @@ domReady(function(){
                     }
                 }
             );
+            // 320 and 768 with third image
+            molt.listen(
+                nodes[2],
+                function(mode){
+                    var width=W();
+                    if(!h && width<320 && mode==768){
+                        ok(this.src.indexOf('images/img3-768.jpg')!=-1,'768 mode with third image when width is less than 320px');
+                        h=true;
+                    }
+                    else if(!f && width<480 && mode==768){
+                        ok(this.src.indexOf('images/img3-768.jpg')!=-1,'768 mode with third image');
+                        f=true;
+                    }
+                    else if(!g && width>=768 && mode==320){
+                        ok(this.src.indexOf('images/img3-320.jpg')!=-1,'320 mode with third image');
+                        g=true;
+                    }
+                }
+            );
             // Discover images
             molt.discover();
             // !480
@@ -52,7 +71,7 @@ domReady(function(){
                 if(!a){
                     var width=W();
                     if(width>=480 && width<768){
-                        ok(nodes[0].style.display=='none' && nodes[1].style.display=='none','!480 mode width both images');
+                        ok(nodes[0].style.display=='none' && nodes[1].style.display=='none' && nodes[2].style.display=='none','!480 mode width all images');
                         a=true;
                     }
                 }

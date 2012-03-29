@@ -50,15 +50,15 @@ domReady(function(){
                 nodes[2],
                 function(mode){
                     var width=W();
-                    if(!h && width<320 && mode==768){
+                    if(!h && width<320 && mode==768 && this.style.display=='block'){
                         ok(this.src.indexOf('images/img3-768.jpg')!=-1,'768 mode with third image when width is less than 320px');
                         h=true;
                     }
-                    else if(!f && width<480 && mode==768){
+                    else if(!f && width<480 && mode==768 && this.style.display=='block'){
                         ok(this.src.indexOf('images/img3-768.jpg')!=-1,'768 mode with third image');
                         f=true;
                     }
-                    else if(!g && width>=768 && mode==320){
+                    else if(!g && width>=768 && mode==320 && this.style.display=='block'){
                         ok(this.src.indexOf('images/img3-320.jpg')!=-1,'320 mode with third image');
                         g=true;
                     }
@@ -71,7 +71,7 @@ domReady(function(){
                 if(!a){
                     var width=W();
                     if(width>=480 && width<768){
-                        ok(nodes[0].style.display=='none' && nodes[1].style.display=='none' && nodes[2].style.display=='none','!480 mode width all images');
+                        ok(nodes[0].style.display=='none' && nodes[1].style.display=='none' && nodes[2].style.display=='none','!480 mode with all images');
                         a=true;
                     }
                 }

@@ -7,11 +7,11 @@
 
 /*!
   * Ender: open module JavaScript framework (client-lib)
-  * copyright Dustin Diaz & Jacob Thornton 2011 (@ded @fat)
+  * copyright Dustin Diaz & Jacob Thornton 2011-2012 (@ded @fat)
   * http://ender.no.de
   * License MIT
   */
-!function (context) {
+(function (context) {
 
   // a global object for node.js module compatiblity
   // ============================================
@@ -24,16 +24,18 @@
 
   var modules = {}
     , old = context.$
+    , oldRequire = context['require']
+    , oldProvide = context['provide']
 
   function require (identifier) {
     // modules can be required from ender's build system, or found on the window
-    var module = modules[identifier] || window[identifier]
-    if (!module) throw new Error("Requested module '" + identifier + "' has not been defined.")
+    var module = modules['$' + identifier] || window[identifier]
+    if (!module) throw new Error("Ender Error: Requested module '" + identifier + "' has not been defined.")
     return module
   }
 
   function provide (name, what) {
-    return (modules[name] = what)
+    return (modules['$' + name] = what)
   }
 
   context['provide'] = provide
@@ -44,12 +46,22 @@
     return o
   }
 
+  /**
+    * main Ender return object
+    * @param s a CSS selector or DOM node(s)
+    * @param r a root node(s)
+    * @return {array} an Ender chainable collection
+    */
   function boosh(s, r, els) {
     // string || node || nodelist || window
-    if (typeof s == 'string' || s.nodeName || (s.length && 'item' in s) || s == window) {
+    if (typeof s == 'undefined') {
+      els = []
+    } else if (typeof s == 'string' || s.nodeName || (s.length && 'item' in s) || s == window) {
       els = ender._select(s, r)
       els.selector = s
-    } else els = isFinite(s.length) ? s : [s]
+    } else {
+      els = isFinite(s.length) ? s : [s]
+    }
     return aug(els, boosh)
   }
 
@@ -57,30 +69,39 @@
     return boosh(s, r)
   }
 
+  ender._VERSION = '0.3.8'
+
   aug(ender, {
-      _VERSION: '0.3.6'
-    , fn: boosh // for easy compat to jQuery plugins
+      fn: boosh // for easy compat to jQuery plugins
     , ender: function (o, chain) {
         aug(chain ? boosh : ender, o)
       }
     , _select: function (s, r) {
-        return (r || document).querySelectorAll(s)
+        if (typeof s == 'string') return (r || document).querySelectorAll(s)
+        if (s.nodeName) return [ s ]
+        return s
       }
   })
 
   aug(boosh, {
-    forEach: function (fn, scope, i) {
-      // opt out of native forEach so we can intentionally call our own scope
-      // defaulting to the current item and be able to return self
-      for (i = 0, l = this.length; i < l; ++i) i in this && fn.call(scope || this[i], this[i], i, this)
-      // return self for chaining
-      return this
-    },
-    $: ender // handy reference to self
+      forEach: function (fn, scope, i, l) {
+        // opt out of native forEach so we can intentionally call our own scope
+        // defaulting to the current item and be able to return self
+        for (i = 0, l = this.length; i < l; ++i) i in this && fn.call(scope || this[i], this[i], i, this)
+        // return self for chaining
+        return this
+      }
+    , $: ender // handy reference to self
   })
 
-  ender.noConflict = function () {
+  // use callback to receive Ender's require & provide
+  ender.noConflict = function (callback) {
     context.$ = old
+    if (callback) {
+      context['provide'] = oldProvide
+      context['require'] = oldRequire
+      callback(require, provide, this)
+    }
     return this
   }
 
@@ -88,16 +109,17 @@
   // use subscript notation as extern for Closure compilation
   context['ender'] = context['$'] = context['ender'] || ender
 
-}(this);
+}(this));
 
-!function () {
+
+(function () {
 
   var module = { exports: {} }, exports = module.exports;
 
   /*
       molt, image updater for responsive designs
   
-      Version:    2.0.2
+      Version:    2.4.0
       Author:     Aurélien Delogu (dev@dreamysource.fr)
       Homepage:   https://github.com/pyrsmk/molt
       License:    MIT
@@ -116,6 +138,7 @@
           Array nodes: molt images
       */
       var getAttribute='getAttribute',
+          triggers=[],
           listeners=[],
           nodes=[],
           i,
@@ -125,34 +148,57 @@
       */
       refresh=function(){
           var j,
+              k,
+  			l,
               url,
+              display,
               node,
               modes,
+  			mapping,
               width=W(),
               stack;
           // Browse molt images
           i=-1;
           while(node=nodes[++i]){
               // Guess the current mode for that image
-              modes=(url=node.getAttribute('url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
+              modes=(url=node.getAttribute('data-url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
+              for(l=0;l<modes.length;l++){
+  				mapping = modes[l].split(":");
+                  if(mapping.length===1){
+                      modes[l] = [mapping[0], mapping[0]];
+                  }else{
+                      modes[l] = [mapping[0], mapping[1]];
+                  }
+              }
               j=modes.length;
               while(j){
-                  if(width>modes[--j].match(/^!?(.+)/)[1]){
+                  if(width>modes[--j][0].match(/^!?(.+)/)[1]){
                       break;
                   }
               }
-              // Hide node
-              if(modes[j].charAt(0)=='!'){
+              // Negative mode
+              if(modes[j][0].charAt(0)=='!'){
+                  // Hide image
                   node.style.display='none';
               }
-              // Refresh src
+              // Normal mode
               else{
-                  node.src=url.replace(/\{.+\}/g,modes[j]);
+                  // Show image
+                  if(node.style.display=='none'){
+                      if(display=node.getAttribute('data-display')){
+                          node.style.display=display;
+                      }
+                      else{
+                          node.style.display='inline';
+                      }
+                  }
+                  // Refresh src
+                  node.src=url.replace(/\{.+\}/g,modes[j][1]);
                   // Call node listeners
-                  if(stack=listeners[url]){
-                      j=stack.length;
-                      while(j){
-                          stack[--j](node);
+                  k=triggers.length;
+                  while(k){
+                      if(triggers[--k]==node){
+                          listeners[k].apply(node,[modes[j][1]]);
                       }
                   }
               }
@@ -168,16 +214,10 @@
                   Function callback   : function to call when the node has been refreshed
           */
           listen:function(node,callback){
-              // Format
-              node=node[getAttribute]('url');
-              // Init node stack
-              if(!listeners[node]){
-                  listeners[node]=[];
-              }
-              // Add listener
-              listeners[node].push(callback);
+              triggers.push(node);
+              listeners.push(callback);
           },
-          
+  
           /*
               Discover molt images
           */
@@ -186,8 +226,8 @@
               var imgs=document.getElementsByTagName('img'),
                   i=imgs.length;
               while(i){
-                  // Only accept images with URL attribute set
-                  if(imgs[--i][getAttribute]('url')){
+                  // Only accept images with data-url attribute set
+                  if(imgs[--i][getAttribute]('data-url')){
                       nodes.push(imgs[i]);
                   }
               }
@@ -200,6 +240,7 @@
       };
   
   }()));
+  
 
   provide("molt", module.exports);
 
@@ -215,4 +256,4 @@
       }
   },true);
 
-}();
+}());

@@ -1,4 +1,4 @@
-molt 2.3.0
+molt 2.4.0
 ==========
 
 The idea to develop molt comes from a few observations:
@@ -19,7 +19,7 @@ Syntax
 
 A molt image is set as a regular `img` tag on your HTML body (for dynamic generation purposes on server side), but with an `url` attribute:
 
-    <img data-url="images/img{320,1024}.jpg" display="block" alt="">
+    <img data-url="images/img{320,1024}.jpg" data-display="block" alt="">
 
 Numbers in brackets are modes. The selected mode will replace brackets: if the selected mode is 320 then the URL will look like `images/img320.jpg`. A mode is chosen like this:
 
@@ -31,7 +31,7 @@ You can also map modes into different values, for example using `images/img-{320
 
 Moreover, note that you can 'negate' a mode, like `!320`, to make your images hidden for that mode (please take a look at the listener example to know how deal with that special mode).
 
-Finally, the `display` attribute is used when a previously hidden image (by a negative mode) shows up again. Currently, there's no way to distinguish which display CSS property is set on a node (really, no way at all, coming from a lack of specs). So, molt will reset that display property to the `display` attribute value, `inline` otherwise.
+Finally, the `data-display` attribute is used when a previously hidden image (by a negative mode) shows up again. Currently, there's no way to distinguish which display CSS property is set on a node (really, no way at all, coming from a lack of specs). So, molt will reset that display property to the `display` attribute value, `inline` otherwise.
 
 You can apply several properties or launch some actions on a specific refreshed node (when a zoom event has been catched, per example) by listening its refreshing state:
 

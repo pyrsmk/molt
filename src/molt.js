@@ -23,12 +23,12 @@
         triggers=[],
         listeners=[],
         nodes=[],
-        i,
+        i;
 
     /*
         Refresh image nodes
     */
-    refresh=function(){
+    function refresh(){
         var j,
             k,
             l,

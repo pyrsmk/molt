@@ -1,5 +1,5 @@
 OLD		= ls -l | grep .js | sed -r 's/.+\s(\S+)/\1/'
-NAME	= ls src | sed -E 's/ender\.js|package\.json|\s+//' | sed -nE 's/(.+)\.js/\1/p'
+NAME	= ls src | sed -E 's/ender\.js|package\.json|\s*//' | sed -nE 's/(.+)\.js/\1/p'
 VERSION	= grep -m 1 Version src/\`${NAME}\`.js | sed -E 's/.*:\s*(.+)/\1/'
 W		= ls lib | grep W
 

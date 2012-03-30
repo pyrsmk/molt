@@ -31,21 +31,22 @@
     refresh=function(){
         var j,
             k,
-			l,
+            l,
             url,
             display,
             node,
             modes,
-			mapping,
+            mapping,
             width=W(),
             stack;
-        // Browse molt images
-        i=-1;
+            // Browse molt images
+            i=-1;
+
         while(node=nodes[++i]){
             // Guess the current mode for that image
             modes=(url=node.getAttribute('data-url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
             for(l=0;l<modes.length;l++){
-				mapping = modes[l].split(":");
+                mapping = modes[l].split(":");
                 if(mapping.length===1){
                     modes[l] = [mapping[0], mapping[0]];
                 }else{

@@ -109,7 +109,8 @@
             var imgs=document.getElementsByTagName('img');
             for(var n = 0; n < imgs.length; n++){
                 // Only accept images with data-url attribute set
-                if(imgs[n][getAttribute]('data-url')){
+                if(imgs[n][getAttribute]('data-url') && ! imgs[n][getAttribute]('data-molt')){
+                    imgs[n].setAttribute('data-molt', 'discovered');
                     nodes.push(imgs[n]);
                 }
             }

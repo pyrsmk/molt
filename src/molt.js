@@ -15,7 +15,7 @@
         this.molt=def;
     }
 }(function(){
-    
+
     /*
         Array nodes: molt images
     */
@@ -24,7 +24,7 @@
         listeners=[],
         nodes=[],
         i,
-    
+
     /*
         Refresh image nodes
     */
@@ -86,12 +86,12 @@
             }
         }
     };
-    
+
     return {
-        
+
         /*
             Add a listener to the stack
-            
+
                 Object node         : node to listen
                 Function callback   : function to call when the node has been refreshed
         */
@@ -105,20 +105,20 @@
         */
         discover:function(){
             // Discover images
-            var imgs=document.getElementsByTagName('img'),
-                i=imgs.length;
-            while(i){
+            var imgs=document.getElementsByTagName('img');
+            for(var n = 0; n < imgs.length; n++){
                 // Only accept images with data-url attribute set
-                if(imgs[--i][getAttribute]('data-url')){
-                    nodes.push(imgs[i]);
+                if(imgs[n][getAttribute]('data-url')){
+                    nodes.push(imgs[n]);
                 }
             }
             // Update images
             refresh();
             // Catch events
             W(refresh);
+
+            return nodes;
         }
-        
     };
 
 }()));

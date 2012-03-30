@@ -1,7 +1,7 @@
-NAME	= molt
-OLD		= ls | grep .js
-VERSION	= grep -m 1 Version src/${NAME}.js | sed -E 's/.*:\s*(.+)/\1/'
 W		= ls lib | grep W
+
+NAME	= molt
+VERSION	= grep -m 1 Version src/${NAME}.js | cut -c17-
 
 all: lint minify
 

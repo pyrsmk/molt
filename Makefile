@@ -1,7 +1,6 @@
-W		= ls lib | grep W
-
 NAME	= molt
-VERSION	= grep -m 1 Version src/${NAME}.js | cut -c17-
+VERSION	= grep -m 1 Version src/${NAME}.js | cut -c19-
+W		= ls lib | grep W
 
 all: lint minify
 

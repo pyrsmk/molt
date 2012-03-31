@@ -1,7 +1,7 @@
 /*
     molt, image updater for responsive designs
 
-    Version     : 2.4.1
+    Version     : 2.4.2
     Author      : Aurélien Delogu (dev@dreamysource.fr)
     Homepage    : https://github.com/pyrsmk/molt
     License     : MIT
@@ -20,6 +20,7 @@
         Array nodes: molt images
     */
     var getAttribute='getAttribute',
+        data='data-',
         triggers=[],
         listeners=[],
         nodes=[],
@@ -40,7 +41,7 @@
         i=-1;
         while(node=nodes[++i]){
             // Guess the current mode for that image
-            modes=(url=node.getAttribute('data-url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
+            modes=(url=node.getAttribute(data+'url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
             j=modes.length;
             while(j--){
                 mode=modes[j].split(':');
@@ -60,7 +61,7 @@
             else{
                 // Show image
                 if(node.style.display=='none'){
-                    if(k=node.getAttribute('data-display')){
+                    if(k=node.getAttribute(data+'display')){
                         node.style.display=k;
                     }
                     else{
@@ -71,8 +72,8 @@
                 node.src=url.replace(/\{.+\}/g,mode[1]);
                 // Call node listeners
                 k=triggers.length;
-                while(k){
-                    if(triggers[--k]==node){
+                while(k--){
+                    if(triggers[k]==node){
                         listeners[k].apply(node,[mode[1]]);
                     }
                 }
@@ -98,19 +99,21 @@
         */
         discover:function(){
             // Discover images
-            var imgs=document.getElementsByTagName('img');
-            for(var n = 0; n < imgs.length; n++){
+            var img,
+                imgs=document.getElementsByTagName('img'),
+                discovered='discovered';
+            i=-1;
+            while(img=imgs[++i]){
                 // Only accept images with data-url attribute set
-                if(imgs[n][getAttribute]('data-url') && ! imgs[n][getAttribute]('data-molt')){
-                    imgs[n].setAttribute('data-molt', 'discovered');
-                    nodes.push(imgs[n]);
+                if(img[getAttribute](data+'url') && !img[getAttribute](data+discovered)){
+                    img.setAttribute(data+discovered,discovered);
+                    nodes.push(img);
                 }
             }
             // Update images
             refresh();
             // Catch events
             W(refresh);
-
             return nodes;
         }
     };

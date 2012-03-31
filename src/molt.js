@@ -15,7 +15,7 @@
         this.molt=def;
     }
 }(function(){
-    
+
     /*
         Array nodes: molt images
     */
@@ -23,29 +23,30 @@
         triggers=[],
         listeners=[],
         nodes=[],
-        i,
-    
+        i;
+
     /*
         Refresh image nodes
     */
-    refresh=function(){
+    function refresh(){
         var j,
             k,
-			l,
+            l,
             url,
             display,
             node,
             modes,
-			mapping,
+            mapping,
             width=W(),
             stack;
-        // Browse molt images
-        i=-1;
+            // Browse molt images
+            i=-1;
+
         while(node=nodes[++i]){
             // Guess the current mode for that image
             modes=(url=node.getAttribute('data-url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
             for(l=0;l<modes.length;l++){
-				mapping = modes[l].split(":");
+                mapping = modes[l].split(":");
                 if(mapping.length===1){
                     modes[l] = [mapping[0], mapping[0]];
                 }else{
@@ -86,12 +87,12 @@
             }
         }
     };
-    
+
     return {
-        
+
         /*
             Add a listener to the stack
-            
+
                 Object node         : node to listen
                 Function callback   : function to call when the node has been refreshed
         */
@@ -105,20 +106,21 @@
         */
         discover:function(){
             // Discover images
-            var imgs=document.getElementsByTagName('img'),
-                i=imgs.length;
-            while(i){
+            var imgs=document.getElementsByTagName('img');
+            for(var n = 0; n < imgs.length; n++){
                 // Only accept images with data-url attribute set
-                if(imgs[--i][getAttribute]('data-url')){
-                    nodes.push(imgs[i]);
+                if(imgs[n][getAttribute]('data-url') && ! imgs[n][getAttribute]('data-molt')){
+                    imgs[n].setAttribute('data-molt', 'discovered');
+                    nodes.push(imgs[n]);
                 }
             }
             // Update images
             refresh();
             // Catch events
             W(refresh);
+
+            return nodes;
         }
-        
     };
 
 }()));

@@ -1,7 +1,7 @@
 /*
     molt, image updater for responsive designs
 
-    Version     : 2.4.0
+    Version     : 2.4.1
     Author      : Aurélien Delogu (dev@dreamysource.fr)
     Homepage    : https://github.com/pyrsmk/molt
     License     : MIT
@@ -28,39 +28,31 @@
     /*
         Refresh image nodes
     */
-    function refresh(){
+    refresh=function(){
         var j,
             k,
-            l,
             url,
-            display,
             node,
+            mode,
             modes,
-            mapping,
-            width=W(),
-            stack;
-            // Browse molt images
-            i=-1;
-
+            width=W();
+        // Browse molt images
+        i=-1;
         while(node=nodes[++i]){
             // Guess the current mode for that image
             modes=(url=node.getAttribute('data-url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
-            for(l=0;l<modes.length;l++){
-                mapping = modes[l].split(":");
-                if(mapping.length===1){
-                    modes[l] = [mapping[0], mapping[0]];
-                }else{
-                    modes[l] = [mapping[0], mapping[1]];
-                }
-            }
             j=modes.length;
-            while(j){
-                if(width>modes[--j][0].match(/^!?(.+)/)[1]){
+            while(j--){
+                mode=modes[j].split(':');
+                if(mode.length==1){
+                    mode[1]=mode[0];
+                }
+                if(width>mode[0].match(/^!?(.+)/)[1]){
                     break;
                 }
             }
             // Negative mode
-            if(modes[j][0].charAt(0)=='!'){
+            if(mode[0].charAt(0)=='!'){
                 // Hide image
                 node.style.display='none';
             }
@@ -68,20 +60,20 @@
             else{
                 // Show image
                 if(node.style.display=='none'){
-                    if(display=node.getAttribute('data-display')){
-                        node.style.display=display;
+                    if(k=node.getAttribute('data-display')){
+                        node.style.display=k;
                     }
                     else{
                         node.style.display='inline';
                     }
                 }
                 // Refresh src
-                node.src=url.replace(/\{.+\}/g,modes[j][1]);
+                node.src=url.replace(/\{.+\}/g,mode[1]);
                 // Call node listeners
                 k=triggers.length;
                 while(k){
                     if(triggers[--k]==node){
-                        listeners[k].apply(node,[modes[j][1]]);
+                        listeners[k].apply(node,[mode[1]]);
                     }
                 }
             }

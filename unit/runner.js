@@ -1,7 +1,7 @@
 domReady(function(){
 
     sink('molt',function(test,ok,before,after){
-        
+
         test('Modes',7,function(){
             log('Please play with window size to execute all tests');
             // Get nodes
@@ -77,7 +77,12 @@ domReady(function(){
                 }
             });
         });
-        
+
+        test('discover', 2, function(){
+          ok(molt.discover().length == 3, 'returns the 3 images')
+          ok(molt.discover().length == 3, 'does not rediscover found images')
+        })
+
         test('Ender',2,function(){
             ok($($('img')[0]).listen,'Listen method registered');
             ok($.discover,'Discover method registered');

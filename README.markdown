@@ -60,6 +60,11 @@ Then call molt's `noscript` method
       molt.noscript().discover()
     </script>
 
+Installation
+------------
+
+Molt is [W](https://github.com/pyrsmk/W) dependent and so can handle responsive events (it should be a good idea to read the W README file to well understand how it interacts with molt). So, if you've planned to use W in your website take the `molt-xxx.min.js` version, otherwise please take the `molt-W-xxx.min.js` one.
+
 Ender integration
 -----------------
 
@@ -88,7 +93,6 @@ The idea to develop molt comes from a few observations:
 
 Molt try to solve all these problems.
 
-Also, it's [W](https://github.com/pyrsmk/W) dependent and so can handle responsive events (it should be a good idea to read the W README file to well understand how it interacts with molt). So, if you've planned to use W in your website take the `molt-xxx.min.js` version, otherwise please take the `molt-W-xxx.min.js` one.
 
 License
 -------

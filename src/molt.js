@@ -95,21 +95,21 @@
         },
 
         /*
-            Replace images in noscript tags which have the image-replacement class
-            only images will be attached to the document
+            Support for browsers with javascript disabled
+            wrap any responsive images in a noscript tag
+            and move the data-url attribute to the noscript tag
+
+            <noscript data-url="http://cambelt.co/{320,480,768,1280}x400"><img src='http://cambelt.co/400x320'/></noscript>
+
         */
         noscript:function(){
           var noscriptTags = document.getElementsByTagName('noscript');
           i=-1;
           while(noscriptTag=noscriptTags[++i]){
-            if((noscriptTag.getAttribute("class") || "").match(/molt-ir/)){
-              var fragment = document.createElement("div");
-              // if the img src is not replaced, the noscript image will be loaded
-              fragment.innerHTML = noscriptTag.innerText.replace(/src/ig,"data-original-src")
-              newImages = fragment.getElementsByTagName("img")
-              while(image=newImages[0]){
-                noscriptTag.parentNode.insertBefore(image,noscriptTag);
-              }
+            if(noscriptTag.getAttribute("data-url")){
+              var image = document.createElement("img");
+              image.setAttribute('data-url', noscriptTag.getAttribute('data-url'))
+              noscriptTag.parentNode.insertBefore(image,noscriptTag);
             }
           }
 

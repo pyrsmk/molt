@@ -9,15 +9,11 @@
     </head>
     <body>
       <h1>Image One &amp; Two</h1>
-      <noscript class='molt-ir'>
-        <img data-url="http://cambelt.co/{320,480,768,1280}x400" src='http://cambelt.co/400x320/NoScript?color=FF0000' alt='An image'/>
-        <img data-url="http://cambelt.co/{320,480,768,1280}x400/Second+Image?color=EEEEFF" src='http://cambelt.co/400x320/NoScript?color=FF0000' alt='An image'/>
-        <div>this should not appear on a site with scripts</div>
+      <noscript data-url="http://cambelt.co/{320,480,768,1280}x400">
+        <img src='http://cambelt.co/400x320/NoScript?color=FF0000' alt='An image'/>
       </noscript>
-
-      <h2>NoScript Image</h2>
-      <noscript>
-        <img data-url="http://cambelt.co/{320,480,768,1280}x400" src='http://cambelt.co/400x320/NoScript?color=FF0000' alt='An image'/>
+      <noscript data-url="http://cambelt.co/{320,480,768,1280}x400/Second+Image?color=EEEEFF">
+        <img  src='http://cambelt.co/400x320/NoScript?color=FF0000' alt='An image'/>
       </noscript>
 
       <script type="text/javascript">

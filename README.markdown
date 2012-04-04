@@ -48,17 +48,18 @@ To finish, molt must discover all your molt images to automatically manage them 
 No Javascript
 -------------
 
-To handle non-javascript clients wrap your img tags in a `noscript` tag with the class `molt-ir`
+To handle non-javascript clients wrap your img tags in a `noscript` tag and move the `data-url` attribute into the `noscript` tag.
 
-Then call molt's `noscript` method
+Then call molt's `noscript` method before `discover`.
 
-    <noscript class='molt-ir'>
-      <img data-url="images/img{320,1024}.jpg" data-display="block" alt="">
+    <noscript data-url='images/img{320,1024}.jpg'>
+      <img src='images/img320.jpg'>
     </noscript>
 
     <script>
       molt.noscript().discover()
     </script>
+
 
 Installation
 ------------

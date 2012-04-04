@@ -56,7 +56,20 @@ To finish, molt must discover all your molt images to automatically manage them 
 
     molt.discover();
 
-Oh yeah... If you want to handle non-javascript users to make them displaying images even so: forget it. There's, currently, no clean solution for that.
+No Javascript
+-------------
+
+To handle non-javascript clients wrap your img tags in a `noscript` tag with the class `molt-ir`
+
+Then call molt's `noscript` method
+
+    <noscript class='molt-ir'>
+      <img data-url="images/img{320,1024}.jpg" data-display="block" alt="">
+    </noscript>
+
+    <script>
+      molt.noscript().discover()
+    </script>
 
 Ender integration
 -----------------

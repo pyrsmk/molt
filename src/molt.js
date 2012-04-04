@@ -95,6 +95,28 @@
         },
 
         /*
+            Replace images in noscript tags which have the image-replacement class
+            only images will be attached to the document
+        */
+        noscript:function(){
+          var noscriptTags = document.getElementsByTagName('noscript');
+          i=-1;
+          while(noscriptTag=noscriptTags[++i]){
+            if((noscriptTag.getAttribute("class") || "").match(/molt-ir/)){
+              var fragment = document.createElement("div");
+              // if the img src is not replaced, the noscript image will be loaded
+              fragment.innerHTML = noscriptTag.innerText.replace(/src/ig,"data-original-src")
+              newImages = fragment.getElementsByTagName("img")
+              while(image=newImages[0]){
+                noscriptTag.parentNode.insertBefore(image,noscriptTag);
+              }
+            }
+          }
+
+          return this;
+        },
+
+        /*
             Discover molt images
         */
         discover:function(){

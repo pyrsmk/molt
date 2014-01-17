@@ -9,7 +9,7 @@ lint:
 
 minify:
 	rm -f ${NAME}*
-	uglifyjs -nc src/${NAME}.js > ${NAME}-`${VERSION}`.min.js
+	uglifyjs src/${NAME}.js > ${NAME}-`${VERSION}`.min.js
 	cat lib/`${W}` ${NAME}-`${VERSION}`.min.js > ${NAME}-`${VERSION}`.W.min.js
 
 instdeps:

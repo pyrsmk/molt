@@ -1,0 +1,12 @@
+{
+  "name": "pyrsmk/molt",
+  "version": "2.5.0",
+  "main": "src/molt.js",
+  "description": "Image updater for responsive designs",
+  "license": "MIT",
+  "author": "Aurélien Delogu",
+  "repository": {
+      "type": "git"
+    , "url": "https://github.com/pyrsmk/molt.git"
+  }
+}

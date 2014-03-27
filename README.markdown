@@ -74,4 +74,4 @@ Some good news: molt is compatible with [ender](http://ender.no.de) :)
 License
 -------
 
-Molt is released under the MIT license.
+Molt is released under the [MIT license](http://dreamysource.mit-license.org).

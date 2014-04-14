@@ -98,6 +98,28 @@
         },
 
         /*
+            Support for browsers with javascript disabled
+            wrap any responsive images in a noscript tag
+            and move the data-url attribute to the noscript tag
+
+            <noscript data-url="http://cambelt.co/{320,480,768,1280}x400"><img src='http://cambelt.co/400x320'/></noscript>
+
+        */
+        noscript:function(){
+          var noscriptTags = document.getElementsByTagName('noscript');
+          i=-1;
+          while(noscriptTag=noscriptTags[++i]){
+            if(noscriptTag.getAttribute("data-url")){
+              var image = document.createElement("img");
+              image.setAttribute('data-url', noscriptTag.getAttribute('data-url'))
+              noscriptTag.parentNode.insertBefore(image,noscriptTag);
+            }
+          }
+
+          return this;
+        },
+
+        /*
             Discover molt images
         */
         discover:function(){

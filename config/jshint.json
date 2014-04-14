@@ -1,8 +1,0 @@
-{
-    "browser"   : true,
-    "predef"    : ["module","W"],
-    "boss"      : true,
-    "curly"     : true,
-    "eqnull"    : true,
-    "undef"     : true
-}

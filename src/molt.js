@@ -1,124 +1,85 @@
 /*
-    molt, image updater for responsive designs
+	molt, image updater for responsive designs
 
-    Version     : 2.5.0
-    Author      : Aurélien Delogu (dev@dreamysource.fr)
-    Homepage    : https://github.com/pyrsmk/molt
-    License     : MIT
+	Version     : 3.0.0
+	Author      : Aurélien Delogu (dev@dreamysource.fr)
+	Homepage    : https://github.com/pyrsmk/molt
+	License     : MIT
 */
 
-(function(def){
-    if(typeof define=='function'){
-		define(def);
+(function(context,name,definition){
+	if(typeof module!='undefined' && module.exports){
+		module.exports=definition();
 	}
-    else if(typeof module!='undefined'){
-        module.exports=def;
-    }
-    else{
-        this.molt=def;
-    }
-}(function(){
+	else if(typeof define=='function' && define.amd){
+		define(definition);
+	}
+	else{
+		context[name]=definition();
+	}
+}(this,'molt',function(){
 
-    /*
-        Array nodes: molt images
-    */
-    var getAttribute='getAttribute',
-        data='data-',
-        triggers=[],
-        listeners=[],
-        nodes=[],
-        i,
+	var images=[],
 
-    /*
-        Refresh image nodes
-    */
-    refresh=function(){
-        var j,
-            k,
-            url,
-            node,
-            mode,
-            modes,
-            width=W();
-        // Browse molt images
-        i=-1;
-        while(node=nodes[++i]){
-            // Guess the current mode for that image
-            modes=(url=node.getAttribute(data+'url')).match(/\{\s*(.*?)\s*\}/)[1].split(/\s*,\s*/);
-            j=modes.length;
-            while(j--){
-                mode=modes[j].split(':');
-                if(mode.length==1){
-                    mode[1]=mode[0];
-                }
-                if(width>mode[0].match(/^!?(.+)/)[1]){
-                    break;
-                }
-            }
-            // Negative mode
-            if(mode[0].charAt(0)=='!'){
-                // Hide image
-                node.style.display='none';
-            }
-            // Normal mode
-            else{
-                // Show image
-                if(node.style.display=='none'){
-                    if(k=node.getAttribute(data+'display')){
-                        node.style.display=k;
-                    }
-                    else{
-                        node.style.display='inline';
-                    }
-                }
-                // Refresh src
-                node.src=url.replace(/\{.+\}/g,mode[1]);
-                // Call node listeners
-                k=triggers.length;
-                while(k--){
-                    if(triggers[k]==node){
-                        listeners[k].apply(node,[mode[1]]);
-                    }
-                }
-            }
-        }
-    };
+	// Core function
+	refresh=function(){
+		var width=W(),
+			i,j,k,l,
+			attributes,
+			url,
+			modes;
+		// Browse images
+		for(i=0,j=images.length;i<j;++i){
+			// Prepare
+			modes=[];
+			url='';
+			attributes=images[i].attributes;
+			// Discover modes
+			for(k=0,l=attributes.length;k<l;++k){
+				if(/^data-\d+$/i.test(attributes[k].name)){
+					modes.push(parseInt(attributes[k].name.substring(5),10));
+				}
+			}
+			// Sort modes
+			modes.sort(function(a,b){
+				return a-b;
+			});
+			// Find which URL to load
+			for(k=0,l=modes.length;k<l;++k){
+				if(width>=modes[k]){
+					url=attributes['data-'+modes[k]].value;
+				}
+			}
+			// Load image
+			if(url && url!=images[i].src){
+				images[i].src=url;
+				if(images[i].style.visibility!='visible'){
+					images[i].style.visibility='visible';
+					images[i].style.width='auto';
+					images[i].style.height='auto';
+				}
+			}
+			// Hide image
+			else if(images[i].style.visibility!='hidden'){
+				images[i].style.visibility='hidden';
+				images[i].style.width=0;
+				images[i].style.height=0;
+			}
+		}
+	};
 
-    return {
+	// Refresh images when needed
+	W(refresh);
 
-        /*
-            Add a listener to the stack
+	// Add new nodes to the stack
+	return function(nodes){
+		if(nodes.length===undefined){
+			nodes=[nodes];
+		}
+		for(var i=0,j=nodes.length;i<j;++i){
+			images.push(nodes[i]);
+		}
+		refresh();
+	};
 
-                Object node         : node to listen
-                Function callback   : function to call when the node has been refreshed
-        */
-        listen:function(node,callback){
-            triggers.push(node);
-            listeners.push(callback);
-        },
-
-        /*
-            Discover molt images
-        */
-        discover:function(){
-            // Discover images
-            var img,
-                imgs=document.getElementsByTagName('img'),
-                discovered='discovered';
-            i=-1;
-            while(img=imgs[++i]){
-                // Only accept images with data-url attribute set
-                if(img[getAttribute](data+'url') && !img[getAttribute](data+discovered)){
-                    img.setAttribute(data+discovered,discovered);
-                    nodes.push(img);
-                }
-            }
-            // Update images
-            refresh();
-            // Catch events
-            W(refresh);
-            return nodes;
-        }
-    };
-
-}()));
+}));

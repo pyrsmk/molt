@@ -5,7 +5,8 @@ module.exports = function(grunt) {
 		bower: grunt.file.readJSON('bower.json'),
 		// Remove obsolete files
 		clean: {
-			old: ['*.min.js']
+			old: ['*.min.js'],
+			work: ['molt.min.js']
 		},
 		// Lint
 		jshint: {
@@ -28,8 +29,15 @@ module.exports = function(grunt) {
 		uglify: {
 			library: {
 				files: {
-					'<%= bower.name %>-<%= bower.version %>.min.js': ['src/*.js']
+					'molt.min.js': ['src/*.js']
 				}
+			}
+		},
+		// Concatenate
+		concat: {
+			library: {
+				src: ['lib/W*.js', 'molt.min.js'],
+				dest: 'molt-<%= bower.version %>.min.js'
 			}
 		},
 	});
@@ -38,8 +46,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 
 	// Define tasks
-	grunt.registerTask('default', ['clean', 'jshint', 'uglify']);
+	grunt.registerTask('default', ['clean', 'jshint', 'uglify', 'concat', 'clean:work']);
 
 };

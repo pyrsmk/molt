@@ -1,4 +1,4 @@
-molt 3.0.0
+molt 3.1.0
 ==========
 
 Molt is a tiny module that updates images according to the current viewport's width to have a better responsive design. It's built in front of [W](https://github.com/pyrsmk/W), it supports AMD/CommonJS and it's available on [bower](http://bower.io).

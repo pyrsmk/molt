@@ -59,8 +59,8 @@
 			attributes=img.attributes;
 			mode=0;
 			// Discover modes
-			if(attributes['data-modes']){
-				modes=attributes['data-modes'].value.split(/\s*,\s*/);
+			if(attributes['data-src']){
+				modes=attributes['data-src'].value.match(/\{(.+?)\}/)[1].split(/\s*,\s*/);
 			}
 			else{
 				for(k=0,l=attributes.length;k<l;++k){
@@ -77,8 +77,8 @@
 			for(k=0,l=modes.length;k<l;++k){
 				if(width>=modes[k]){
 					mode=modes[k];
-					if(attributes['data-modes']){
-						url=attributes['data-src'].value.replace(/\*\*/,modes[k]);
+					if(attributes['data-src']){
+						url=attributes['data-src'].value.replace(/\{.+?\}/,modes[k]);
 					}
 					else{
 						url=attributes['data-'+modes[k]].value;

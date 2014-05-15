@@ -22,6 +22,7 @@
 		loaded,
 		Promises={
 			promises: {
+				early: [],
 				each: [],
 				then: []
 			},
@@ -49,6 +50,11 @@
 			img;
 		loading=0;
 		loaded=0;
+		// Launch early promises
+		Promises.run('early',{
+			mode : mode,
+			images : images
+		});
 		// Browse images
 		for(i=0,j=images.length;i<j;++i){
 			// Prepare
@@ -96,7 +102,10 @@
 							image : img
 						});
 						if(loaded==loading){
-							Promises.run('then',images);
+							Promises.run('then',{
+								mode : mode,
+								images : images
+							});
 						}
 					};
 				}(mode,img);
@@ -131,6 +140,10 @@
 		}
 		// Promises
 		var promises={
+			early: function(func){
+				Promises.add('early',func);
+				return promises;
+			},
 			each: function(func){
 				Promises.add('each',func);
 				return promises;

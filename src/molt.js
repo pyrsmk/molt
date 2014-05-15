@@ -23,8 +23,7 @@
 		Promises={
 			promises: {
 				each: [],
-				then: [],
-				once: []
+				then: []
 			},
 			add: function(type,func){
 				if(typeof func=='function'){
@@ -97,8 +96,6 @@
 							image : img
 						});
 						if(loaded==loading){
-							Promises.run('once',images);
-							Promises.promises.once=[];
 							Promises.run('then',images);
 						}
 					};
@@ -140,10 +137,6 @@
 			},
 			then: function(func){
 				Promises.add('then',func);
-				return promises;
-			},
-			once: function(func){
-				Promises.add('once',func);
 				return promises;
 			},
 			start: function(){

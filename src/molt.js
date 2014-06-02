@@ -22,6 +22,8 @@
 			promises: {
 				early: [],
 				each: [],
+				eachonce: [],
+				once: [],
 				then: []
 			},
 			add: function(type,func){
@@ -35,32 +37,44 @@
 				}
 			}
 		},
-		loading,
-		loaded,
-		cache=[],
-		getOnLoad=function(mode,img){
+		loading=0,
+		registered=false,
+		getOnLoad=function(url,img,mode){
 			return function(){
-				++loaded;
-				cache.push(img.getAttribute('src'));
-				Promises.run('each',{
-					mode : mode,
-					image : img
-				});
-				if(loaded>=loading){
-					Promises.run('then',{
-						mode : mode,
-						images : images
-					});
+				// Load image to the DOM
+				img.src=url;
+				// Launch 'eachonce' callbacks
+				if(Promises.promises.eachonce.length){
+					Promises.run('eachonce',{mode:mode,img:img});
+					Promises.promises.eachonce=[];
+				}
+				// Launch 'each' callbacks
+				Promises.run('each',{mode:mode,img:img});
+				// If all images have been loaded
+				if(!--loading){
+					// Launch 'once' callbacks
+					if(Promises.promises.once.length){
+						Promises.run('once',{mode:mode,imgs:images});
+						Promises.promises.once=[];
+					}
+					// Launch 'then' callbacks
+					Promises.run('then',{mode:mode,imgs:images});
 				}
 			};
 		},
 		getOnError=function(url){
 			return function(){
-				throw "An error occured when loading '"+url+"'";
+				--loading;
+				throw "An error has occured when loading '"+url+"'";
 			};
 		},
 		// Core function
 		refresh=function(){
+			// Register W once
+			if(!registered){
+				W(refresh);
+				registered=true;
+			}
 			// Prepare
 			var width=W(),
 				i,j,k,l,
@@ -68,13 +82,14 @@
 				url,
 				mode,
 				modes,
-				img;
-			loading=0;
-			loaded=0;
-			// Launch early promises
+				img,
+				image,
+				then=true;
+			loading+=images.length;
+			// Launch 'early' callbacks
 			Promises.run('early',{
 				mode : mode,
-				images : images
+				imgs : images
 			});
 			// Browse images
 			for(i=0,j=images.length;i<j;++i){
@@ -112,18 +127,17 @@
 					}
 				}
 				// Load image
-				if(url && url!=img.src){
-					++loading;
-					if(cache.indexOf(url)==-1){
-						if(!img.onload){
-							img.onload=getOnLoad(mode,img);
-							img.onerror=getOnError(url);
-						}
+				if(url){
+					then=false;
+					image=new Image();
+					image.src=url;
+					if(image.complete===true){
 						img.src=url;
+						getOnLoad(url,img,mode)();
 					}
 					else{
-						img.src=url;
-						getOnLoad(mode,img)();
+						image.onload=getOnLoad(url,img,mode);
+						image.onerror=getOnError(url);
 					}
 					if(img.style.visibility!='visible'){
 						img.style.visibility='visible';
@@ -133,10 +147,15 @@
 				}
 				// Hide image
 				else if(img.style.visibility!='hidden'){
+					--loading;
 					img.style.visibility='hidden';
 					img.style.width=0;
 					img.style.height=0;
 				}
+			}
+			// Launch 'then' callbacks
+			if(then){
+				Promises.run('then',{mode:mode,imgs:images});
 			}
 		};
 
@@ -158,12 +177,19 @@
 				Promises.add('each',func);
 				return promises;
 			},
+			eachOnce: function(func){
+				Promises.add('eachonce',func);
+				return promises;
+			},
+			once: function(func){
+				Promises.add('once',func);
+				return promises;
+			},
 			then: function(func){
 				Promises.add('then',func);
 				return promises;
 			},
 			start: function(){
-				W(refresh);
 				refresh();
 			}
 		};

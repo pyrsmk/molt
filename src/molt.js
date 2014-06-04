@@ -39,135 +39,150 @@
 		},
 		loading=0,
 		registered=false,
-		getOnLoad=function(url,img,mode){
+		getOnLoad=function(src,img){
 			return function(){
 				// Load image to the DOM
-				img.src=url;
+				img.src=src;
 				// Launch 'eachonce' callbacks
 				if(Promises.promises.eachonce.length){
-					Promises.run('eachonce',{mode:mode,img:img});
+					Promises.run('eachonce');
 					Promises.promises.eachonce=[];
 				}
 				// Launch 'each' callbacks
-				Promises.run('each',{mode:mode,img:img});
+				Promises.run('each',img);
 				// If all images have been loaded
 				if(!--loading){
 					// Launch 'once' callbacks
 					if(Promises.promises.once.length){
-						Promises.run('once',{mode:mode,imgs:images});
+						Promises.run('once');
 						Promises.promises.once=[];
 					}
 					// Launch 'then' callbacks
-					Promises.run('then',{mode:mode,imgs:images});
+					Promises.run('then');
 				}
 			};
 		},
-		getOnError=function(url){
+		getOnError=function(src){
 			return function(){
 				--loading;
-				throw "An error has occured when loading '"+url+"'";
+				throw "An error has occured when loading '"+src+"'";
 			};
 		},
 		// Core function
 		refresh=function(){
-			// Register W once
-			if(!registered){
-				W(refresh);
-				registered=true;
-			}
 			// Prepare
-			var width=W(),
-				i,j,k,l,
-				attributes,
-				url,
-				mode,
-				modes,
-				img,
+			var i,j,k,l,
+				width=W(),
+				src,
+				node,
 				image,
 				then=true;
 			loading+=images.length;
 			// Launch 'early' callbacks
-			Promises.run('early',{
-				mode : mode,
-				imgs : images
-			});
+			Promises.run('early');
 			// Browse images
 			for(i=0,j=images.length;i<j;++i){
-				// Prepare
-				img=images[i];
-				modes=[];
-				url='';
-				attributes=img.attributes;
-				mode=0;
-				// Discover modes
-				if(attributes['data-src']){
-					modes=attributes['data-src'].value.match(/\{(.+?)\}/)[1].split(/\s*,\s*/);
-				}
-				else{
-					for(k=0,l=attributes.length;k<l;++k){
-						if(/^data-\d+$/i.test(attributes[k].name)){
-							modes.push(parseInt(attributes[k].name.substring(5),10));
-						}
-					}
-				}
-				// Sort modes
-				modes.sort(function(a,b){
-					return a-b;
-				});
 				// Find which URL to load
-				for(k=0,l=modes.length;k<l;++k){
-					if(width>=modes[k]){
-						mode=modes[k];
-						if(attributes['data-src']){
-							url=attributes['data-src'].value.replace(/\{.+?\}/,modes[k]);
-						}
-						else{
-							url=attributes['data-'+modes[k]].value;
-						}
+				src='';
+				for(k=0,l=images[i].rules.length;k<l;++k){
+					if(width>=images[i].rules[k].width){
+						src=images[i].rules[k].src;
 					}
 				}
 				// Load image
-				if(url){
+				node=images[i].node;
+				if(src){
 					then=false;
 					image=new Image();
-					image.src=url;
+					image.src=src;
 					if(image.complete===true){
-						img.src=url;
-						getOnLoad(url,img,mode)();
+						node.src=src;
+						getOnLoad(src,node)();
 					}
 					else{
-						image.onload=getOnLoad(url,img,mode);
-						image.onerror=getOnError(url);
+						image.onload=getOnLoad(src,node);
+						image.onerror=getOnError(src);
 					}
-					if(img.style.visibility!='visible'){
-						img.style.visibility='visible';
-						img.style.width='auto';
-						img.style.height='auto';
+					if(node.style.visibility!='visible'){
+						node.style.visibility='visible';
+						node.style.width='auto';
+						node.style.height='auto';
 					}
 				}
 				// Hide image
-				else if(img.style.visibility!='hidden'){
+				else if(node.style.visibility!='hidden'){
 					--loading;
-					img.style.visibility='hidden';
-					img.style.width=0;
-					img.style.height=0;
+					node.style.visibility='hidden';
+					node.style.width=0;
+					node.style.height=0;
 				}
 			}
 			// Launch 'then' callbacks
 			if(then){
-				Promises.run('then',{mode:mode,imgs:images});
+				Promises.run('then');
 			}
 		};
 
 	// Add new nodes to the stack
 	return function(nodes){
+		// Prepare
+		var i,j,k,l,
+			widths,
+			rules,
+			rule,
+			image,
+			attributes;
 		if(nodes.length===undefined){
 			nodes=[nodes];
 		}
-		for(var i=0,j=nodes.length;i<j;++i){
-			images.push(nodes[i]);
+		// Register W once
+		if(!registered){
+			W(refresh);
+			registered=true;
 		}
-		// Promises
+		// Browse images
+		for(i=0,j=nodes.length;i<j;++i){
+			// Prepare
+			widths=[];
+			rules=[];
+			attributes=nodes[i].attributes;
+			image={node:nodes[i],rules:[]};
+			// Discover widths
+			if(attributes['data-src']){
+				widths=attributes['data-src'].value.match(/\{(.+?)\}/)[1].split(/\s*,\s*/);
+			}
+			else{
+				for(k=0,l=attributes.length;k<l;++k){
+					if(/^data-\d+$/i.test(attributes[k].name)){
+						widths.push(parseInt(attributes[k].name.substring(5),10));
+					}
+				}
+			}
+			// Sort widths
+			widths.sort(function(a,b){
+				return a-b;
+			});
+			// Generate rules
+			for(k=0,l=widths.length;k<l;++k){
+				rule={width:widths[k]};
+				if(attributes['data-src']){
+					rule.src=attributes['data-src'].value.replace(/\{.+?\}/,widths[k]);
+				}
+				else{
+					rule.src=attributes['data-'+widths[k]].value;
+				}
+				image.rules.push(rule);
+			}
+			// Add a default rule
+			if(attributes['data-default']){ // bouger les options de start() dans la fonction primaire
+				image.rules.unshift({
+					width : 0,
+					src : attributes['data-default'].value
+				});
+			}
+			images.push(image);
+		}
+		// Return promises
 		var promises={
 			early: function(func){
 				Promises.add('early',func);

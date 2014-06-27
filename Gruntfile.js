@@ -29,15 +29,15 @@ module.exports = function(grunt) {
 		uglify: {
 			library: {
 				files: {
-					'molt.min.js': ['src/*.js']
+					'molt-<%= bower.version %>.min.js': ['src/molt.js']
 				}
 			}
 		},
 		// Concatenate
 		concat: {
-			library: {
-				src: ['lib/W*.js', 'molt.min.js'],
-				dest: 'molt-<%= bower.version %>.min.js'
+			moltW: {
+				src: ['lib/W*.js', 'molt-<%= bower.version %>.min.js'],
+				dest: 'molt-<%= bower.version %>.W.min.js'
 			}
 		},
 	});

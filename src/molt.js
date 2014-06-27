@@ -148,8 +148,8 @@
 			attributes=nodes[i].attributes;
 			image={node:nodes[i],rules:[]};
 			// Discover widths
-			if(attributes['data-src']){
-				widths=attributes['data-src'].value.match(/\{(.+?)\}/)[1].split(/\s*,\s*/);
+			if(attributes['data-molt-src']){
+				widths=attributes['data-molt-src'].value.match(/\{(.+?)\}/)[1].split(/\s*,\s*/);
 			}
 			else{
 				for(k=0,l=attributes.length;k<l;++k){
@@ -165,19 +165,19 @@
 			// Generate rules
 			for(k=0,l=widths.length;k<l;++k){
 				rule={width:widths[k]};
-				if(attributes['data-src']){
-					rule.src=attributes['data-src'].value.replace(/\{.+?\}/,widths[k]);
+				if(attributes['data-molt-src']){
+					rule.src=attributes['data-molt-src'].value.replace(/\{.+?\}/,widths[k]);
 				}
 				else{
-					rule.src=attributes['data-'+widths[k]].value;
+					rule.src=attributes['data-molt-'+widths[k]].value;
 				}
 				image.rules.push(rule);
 			}
 			// Add a default rule
-			if(attributes['data-default']){ // bouger les options de start() dans la fonction primaire
+			if(attributes['data-molt-default']){ // bouger les options de start() dans la fonction primaire
 				image.rules.unshift({
 					width : 0,
-					src : attributes['data-default'].value
+					src : attributes['data-molt-default'].value
 				});
 			}
 			images.push(image);

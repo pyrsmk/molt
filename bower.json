@@ -1,7 +1,7 @@
 {
   "name": "molt",
   "version": "4.0.0",
-  "description": "A responsive image updater",
+  "description": "A responsive image loader",
   "main": "src/molt.js",
   "repository": {
     "type": "git",

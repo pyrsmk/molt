@@ -5,19 +5,57 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<script src="js/consolelog.min.js" type="text/javascript"></script>
 		<script src="js/ready-20140222.min.js" type="text/javascript"></script>
-		<script src="../lib/W-0.3.6.min.js" type="text/javascript"></script>
+		<script src="../lib/W-1.0.1.min.js" type="text/javascript"></script>
 		<script src="../src/molt.js" type="text/javascript"></script>
+		<style>
+			#res{
+				position:fixed;
+				color:#fff;
+				background:#4768A5;
+				top:0;
+				left:0;
+				padding:0.2em;
+			}
+		</style>
 	</head>
 	<body>
 
-		<img data-320="images/320.jpg" data-728="images/800.jpg" data-1024="images/1280.jpg" alt="">
+		<div id="res"></div>
+
+		<img data-molt-320w="images/image1-320w.jpg" data-molt-768w="images/image1-800w.jpg" data-molt-1024w="images/image1-1280w.jpg" alt="">
+
+		<img data-molt-src="images/image2-{320w:tiny,800w:medium,1024w:large}.jpg" alt="">
+
+		<img data-molt-src="images/image3-{480h:tiny,800h:medium}.jpg" alt="">
 
 		<script type="text/javascript">
 			domready(function(){
 
-				alert("Please play with the viewport size and look after these 3 modes : 320, 728, 1024. Don't forget to verify that the image must be hidden under a viewport's width of 320px.");
+				alert("Please play with the viewport size and look after these modes : 320w, 768w, 1024w, 320h and 800h. And check your console!");
 
-				molt(document.getElementsByTagName('img')).start();
+				var a=0,
+					nodes=document.getElementsByTagName('img');
+
+				var res=function(){
+					document.getElementById('res').innerHTML=W.getViewportWidth()+'x'+W.getViewportHeight();
+				};
+				res();
+				W.addListener(res);
+
+				molt(nodes)
+					.each(function(mode,image){
+						++a;
+					})
+					.then(function(mode,images){
+						if(a==nodes.length){
+							console.log('Promises have passed');
+						}
+						else{
+							console.log('Promises have not passed');
+						}
+						a=0;
+					})
+					.start();
 				
 			});
 		</script>

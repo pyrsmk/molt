@@ -33,8 +33,7 @@
 
 				alert("Please play with the viewport size and look after these modes : 320w, 768w, 1024w, 320h and 800h. And check your console!");
 
-				var a=0,
-					nodes=document.getElementsByTagName('img');
+				var a=0;
 
 				var res=function(){
 					document.getElementById('res').innerHTML=W.getViewportWidth()+'x'+W.getViewportHeight();
@@ -42,12 +41,42 @@
 				res();
 				W.addListener(res);
 
-				molt(nodes)
-					.each(function(mode,image){
+				molt(document.getElementsByTagName('img'))
+					.early(function(images){
 						++a;
+						if(!images.pop){
+							throw "[early] 'images' should be an array";
+						}
 					})
-					.then(function(mode,images){
-						if(a==nodes.length){
+					.eachOnce(function(image,mode){
+						++a;
+						if(typeof image!='object'){
+							throw "[eachOnce] 'image' should be an object";
+						}
+						if(!/^\d+[wh]$/.test(mode)){
+							throw "[eachOnce] 'mode' should match /^\\d+[wh]$/";
+						}
+					})
+					.each(function(image,mode){
+						++a;
+						if(typeof image!='object'){
+							throw "[each] 'image' should be an object";
+						}
+						if(!/^\d+[wh]$/.test(mode)){
+							throw "[each] 'mode' should match /^\\d+[wh]$/";
+						}
+					})
+					.thenOnce(function(images){
+						++a;
+						if(!images.pop){
+							throw "[thenOnce] 'images' should be an array";
+						}
+					})
+					.then(function(images){
+						if(!images.pop){
+							throw "[then] 'images' should be an array";
+						}
+						if(a==8){
 							console.log('Promises have passed');
 						}
 						else{

@@ -1,4 +1,4 @@
-molt 4.0.0
+molt 4.1.0
 ==========
 
 Molt is a tiny script that updates images according to the current viewport's width or height to have a better responsive design. It's built in top of [W](https://github.com/pyrsmk/W), supports AMD/CommonJS and is available on [bower](http://bower.io).
@@ -50,14 +50,23 @@ molt($('img')).start();
 Promises
 --------
 
-Molt is working by using something called `promises`. They are chainable methods that register callbacks. Those `promises` will let us handle image loadings and start all the engine when we're ready. But examples are better than words :
+Molt is working by using something called `promises`. They are chainable methods that register callbacks. Those `promises` will let us handle image loadings and start all the engine when we're ready, and you can use any promise any times you want. But examples are better than words :
 
 ```javascript
 molt($('img'))
-    .each(function(mode,image){
+    .early(function(images){
+        // Called before downloading new images
+    })
+    .eachOnce(function(image,mode){
+        // Called for each loaded image but once (useful for initializations)
+    })
+    .each(function(image,mode){
         // Called for each loaded image
     })
-    .then(function(mode,images){
+    .thenOnce(function(images){
+        // Called when all images have been loaded but once (useful for initializations)
+    })
+    .then(function(images){
         // Called when all images have been loaded
     })
     .start();

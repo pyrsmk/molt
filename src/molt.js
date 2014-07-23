@@ -20,7 +20,10 @@
 	var images=[],
 		Promises={
 			promises: {
+				early: [],
+				eachonce: [],
 				each: [],
+				thenonce: [],
 				then: []
 			},
 			add: function(type,func){
@@ -39,9 +42,21 @@
 			return function(){
 				// Load image to the DOM
 				node.src=src;
-				// Launch callbacks
-				Promises.run('each',[node]);
+				// Launch 'eachonce' callbacks
+				if(Promises.promises.eachonce.length){
+					Promises.run('eachonce',[node,mode]);
+					Promises.promises.eachonce=[];
+				}
+				// Launch 'each' callbacks
+				Promises.run('each',[node,mode]);
+				// If all images have been loaded
 				if(!--loading){
+					// Launch 'thenonce' callbacks
+					if(Promises.promises.thenonce.length){
+						Promises.run('thenonce',[images]);
+						Promises.promises.thenonce=[];
+					}
+					// Launch 'then' callbacks
 					Promises.run('then',[images]);
 				}
 			};
@@ -64,6 +79,8 @@
 				image,
 				then=true;
 			loading+=images.length;
+			// Launch 'early' callbacks
+			Promises.run('early',[images]);
 			// Browse images
 			for(i=0,j=images.length;i<j;++i){
 				// Find which URL to load
@@ -171,8 +188,20 @@
 		}
 		// Return promises
 		var promises={
+			early: function(func){
+				Promises.add('early',func);
+				return promises;
+			},
+			eachOnce: function(func){
+				Promises.add('eachonce',func);
+				return promises;
+			},
 			each: function(func){
 				Promises.add('each',func);
+				return promises;
+			},
+			thenOnce: function(func){
+				Promises.add('thenonce',func);
 				return promises;
 			},
 			then: function(func){

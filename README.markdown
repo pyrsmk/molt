@@ -16,7 +16,7 @@ What's new since 3.0
 Versions
 --------
 
-The library basic version you want to have is the minimized one with W inside, the so called `molt-X.X.X.W.min.js`. But if you have planned to use W standalone or from another library, you can pick the `molt-X.X.X.min.js` one.
+The library basic version you want to have is the minimized one with W inside, the so called `molt.W.min.js`. But if you have planned to use W standalone or from another library, you can pick the `molt.min.js` one.
 
 Bases
 -----

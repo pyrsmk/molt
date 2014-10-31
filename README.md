@@ -5,6 +5,16 @@ Molt is a tiny script that updates images according to the current viewport's wi
 
 Molt aims to load your images in simple way, but if you want something more advanced to handle, per example, fluid images you can take a look at [picturefill](http://scottjehl.github.io/picturefill/) which follows the current W3C's `picture` proposal.
 
+Install
+-------
+
+You can pick the minified library or install it with :
+
+```
+bower install molt
+npm install pyrsmk-molt --save-dev
+```
+
 What's new since 3.0
 --------------------
 

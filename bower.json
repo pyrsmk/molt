@@ -8,7 +8,8 @@
   },
   "keywords": [
     "responsive",
-    "images"
+    "image",
+    "loader"
   ],
   "authors": ["Aurélien Delogu"],
   "license": "MIT",
@@ -16,5 +17,6 @@
     "url": "https://github.com/pyrsmk/molt/issues",
     "email": "dev@dreamysource.fr"
   },
-  "homepage": "http://dreamysource.fr/product/molt"
+  "homepage": "http://dreamysource.fr/product/molt",
+  "ignore": [".git"]
 }

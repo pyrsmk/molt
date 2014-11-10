@@ -5,7 +5,7 @@
 		Aurélien Delogu (dev@dreamysource.fr)
 */
 
-(function(context,name,definition){
+;(function(context,name,definition){
 	if(typeof module!='undefined' && module.exports){
 		module.exports=definition();
 	}

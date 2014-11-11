@@ -1,9 +1,4 @@
-/*
-	molt, a responsive image updater
-
-	Author
-		Aurélien Delogu (dev@dreamysource.fr)
-*/
+/* molt 4.2.0 (https://github.com/pyrsmk/molt) */
 
 ;(function(context,name,definition){
 	if(typeof module!='undefined' && module.exports){

@@ -11,6 +11,7 @@ Install
 You can pick the minified library or install it with :
 
 ```
+jam install pyrsmk-molt
 bower install molt
 npm install pyrsmk-molt --save-dev
 ```

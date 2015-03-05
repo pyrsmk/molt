@@ -1,0 +1,8 @@
+.git/
+.gitignore
+nodes_modules/
+src/
+tests/
+Gruntfile.js
+package.json
+lib/

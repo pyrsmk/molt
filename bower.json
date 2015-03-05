@@ -18,5 +18,14 @@
     "email": "dev@dreamysource.fr"
   },
   "homepage": "http://dreamysource.fr/product/molt",
-  "ignore": [".git"]
+  "ignore": [
+    ".git/",
+    ".gitignore",
+    "nodes_modules/",
+    "src/",
+    "tests/",
+    "Gruntfile.js",
+    "package.json",
+    "lib/"
+  ]
 }

@@ -1,4 +1,4 @@
-/*! molt 4.2.1 (https://github.com/pyrsmk/molt) */
+/*! molt 4.2.2 (https://github.com/pyrsmk/molt) */
 
 ;(function(context,name,definition){
 	if(typeof module!='undefined' && module.exports){

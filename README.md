@@ -1,9 +1,9 @@
-molt 4.2.1
+molt 4.2.2
 ==========
 
-Molt is a tiny script that updates images according to the current viewport's width or height to have a better responsive design. It's built in top of [W](https://github.com/pyrsmk/W), supports AMD/CommonJS and is available on [bower](http://bower.io).
+Molt is a tiny script that updates images according to the current viewport's width or height to have a better responsive design. It's built in top of [W](https://github.com/pyrsmk/W).
 
-Molt aims to load your images in simple way, but if you want something more advanced to handle, per example, fluid images you can take a look at [picturefill](http://scottjehl.github.io/picturefill/) which follows the current W3C's `picture` proposal.
+Note that today molt is quite obsolete since the W3C's `picture` proposal is out. You can take a look at [picturefill](http://scottjehl.github.io/picturefill/) which is a `picture` polyfill and a more powerful library than molt.
 
 Install
 -------
@@ -11,9 +11,9 @@ Install
 You can pick the minified library or install it with :
 
 ```
-jam install pyrsmk-molt
 bower install molt
 npm install pyrsmk-molt --save-dev
+jam install pyrsmk-molt
 ```
 
 What's new since 3.0

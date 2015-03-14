@@ -1,7 +1,7 @@
 {
   "name": "pyrsmk-molt",
   "description": "A responsive image loader",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "author": "Aurélien Delogu <pyrsmk@dreamysource.fr> (http://dreamysource.fr)",
   "repository": {
     "type": "git",

@@ -1,9 +1,9 @@
 molt 4.2.2
 ==========
 
-Molt is a tiny script that updates images according to the current viewport's width or height to have a better responsive design. It's built in top of [W](https://github.com/pyrsmk/W).
+__This package is now marked as obsolete, please use [picturefill](http://scottjehl.github.io/picturefill/) instead__
 
-Note that today molt is quite obsolete since the W3C's `picture` proposal is out. You can take a look at [picturefill](http://scottjehl.github.io/picturefill/) which is a `picture` polyfill and a more powerful library than molt.
+Molt is a tiny script that updates images according to the current viewport's width or height to have a better responsive design. It's built in top of [W](https://github.com/pyrsmk/W).
 
 Install
 -------
